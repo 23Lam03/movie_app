@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/setting_app.dart';
 
-class LoginSignUp extends StatelessWidget {
-  const LoginSignUp({
+class LetsYouInSignUp extends StatelessWidget {
+  const LetsYouInSignUp({
     super.key,
     required this.theme,
   });
@@ -16,13 +17,16 @@ class LoginSignUp extends StatelessWidget {
       children: [
         Text(
           'Don’t have an account?',
-          style: theme.textTheme.bodyMedium,
+          style: SettingApp.heding4,
         ),
         8.horizontalSpace,
         Text(
           'Sign up',
-          style: theme.textTheme.bodySmall,
-        )
+          style: SettingApp.heding1.copyWith(
+            fontSize: 14,
+            color: const Color(0xffE21221),
+          ),
+        ),
       ],
     );
   }

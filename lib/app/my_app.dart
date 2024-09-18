@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:movie_app/pages/login/login_page.dart';
+import 'package:movie_app/pages/welcome/welcome_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         return GlobalLoaderOverlay(
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: const LoginPage(),
+            home: const WelcomePage(),
             theme: ThemeData.dark(),
           ),
         );

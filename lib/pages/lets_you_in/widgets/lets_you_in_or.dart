@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/utils/get_size.dart';
 
-class LoginOr extends StatelessWidget {
-  const LoginOr({
+class LetsYouInOr extends StatelessWidget {
+  const LetsYouInOr({
     super.key,
     required this.theme,
   });
@@ -23,7 +24,7 @@ class LoginOr extends StatelessWidget {
         16.horizontalSpace,
         Text(
           'or',
-          style: theme.textTheme.bodyLarge?.copyWith(fontSize: 18.sp),
+          style: SettingApp.heding2.copyWith(fontSize: 18.sp),
         ),
         16.horizontalSpace,
         Expanded(
