@@ -37,20 +37,36 @@ class NotificationPage extends StatelessWidget {
                   ),
                   child: const Icon(Icons.notifications, size: 30),
                 ),
-                SizedBox(width: 15.w),
+                15.horizontalSpace,
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Notification Title ',
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Notification Title ',
+                              style: TextStyle(
+                                  fontSize: 16.sp, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Text(
+                            ' Title ',
+                            style: TextStyle(
+                                fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 5.h),
+                      12.verticalSpace,
                       Text(
                         'This is the detail of the notification .',
                         style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                      ),
+                      12.verticalSpace,
+                      Text(
+                        'update',
+                        style: TextStyle(fontSize: 14.sp, color: Colors.red),
                       ),
                     ],
                   ),

@@ -40,6 +40,10 @@ dependencies:
   device_preview: ^1.2.0
   google_fonts: ^6.2.1
   page_transition: ^2.1.0
+  http: ^1.2.2
+  provider: ^6.1.2
+  readmore: ^3.0.0
+  youtube_player_flutter: ^9.1.0
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +71,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/login/
-
+    - assets/images/error/
+    - assets/images/my_list/
+    - assets/images/detail/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

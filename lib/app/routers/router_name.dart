@@ -6,4 +6,6 @@ class RouterName {
   static const letsYouInPage = '/letsYouInPage';
   static const seeAllPage = '/seeAllPage';
   static const notificationPage = '/notificationPage';
+  static const errorPage = '/errorPage';
+  static const movieDetail = '/movieDetail';
 }

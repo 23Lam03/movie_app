@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
-import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/utils/get_size.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/input_custom.dart';
@@ -134,11 +133,9 @@ class _LoginPageState extends State<LoginPage> {
               20.verticalSpace,
               ButtonMainCustom(
                 onTap: () {
-                  Navigator.push(
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
+                    RouterName.homePage,
                   );
                 },
                 title: 'Sign up',
@@ -217,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                     'Sign up',
                     style: SettingApp.heding1.copyWith(
                       fontSize: 14,
-                      color: const Color(0xffE21221),
+                      color: SettingApp.colorText,
                     ),
                   ),
                 ],

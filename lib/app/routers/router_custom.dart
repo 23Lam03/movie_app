@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/app/routers/router_name.dart';
+import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/pages/login/login_page.dart';
 import 'package:movie_app/pages/notification/notification_page.dart';
@@ -34,6 +35,14 @@ class RouterCustom {
       case RouterName.notificationPage:
         return PageTransition(
           child: const NotificationPage(),
+          type: PageTransitionType.rightToLeft,
+        );
+      case RouterName.movieDetail:
+        Map arg = settings.arguments as Map;
+        return PageTransition(
+          child: DetailPage(
+            id: arg['id'],
+          ),
           type: PageTransitionType.rightToLeft,
         );
 

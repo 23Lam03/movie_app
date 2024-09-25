@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SettingApp {
+  static Color colorText = const Color(0xffE21221);
+
   static TextStyle heding1 = GoogleFonts.urbanist(
     fontWeight: FontWeight.w700,
     fontSize: 48.sp,

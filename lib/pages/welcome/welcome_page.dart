@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
-import 'package:movie_app/pages/lets_you_in/lets_you_in_page.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -54,11 +54,9 @@ class WelcomePage extends StatelessWidget {
                 24.verticalSpace,
                 ButtonMainCustom(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const LetsYouInPage(),
-                      ),
+                      RouterName.letsYouInPage,
                     );
                   },
                   title: 'Get Started',

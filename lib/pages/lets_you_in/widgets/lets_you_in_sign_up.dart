@@ -24,7 +24,7 @@ class LetsYouInSignUp extends StatelessWidget {
           'Sign up',
           style: SettingApp.heding1.copyWith(
             fontSize: 14,
-            color: const Color(0xffE21221),
+            color: SettingApp.colorText,
           ),
         ),
       ],

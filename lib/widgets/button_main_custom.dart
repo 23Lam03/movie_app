@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
-import 'package:movie_app/utils/get_size.dart';
 
 class ButtonMainCustom extends StatelessWidget {
   ButtonMainCustom({
@@ -18,13 +17,15 @@ class ButtonMainCustom extends StatelessWidget {
     this.borderColor = const Color(0xffE21221),
     this.borderWidth = 1,
     this.themeText = const TextStyle(),
+    this.paddingVertical = 18,
+    this.paddingHorizontal = 16,
   });
 
   String title;
   Color colorTitle, backgroundColor, splashColor, borderColor;
   Widget? iconLeft;
   bool isShowIconLeft, isShowThemeText;
-  double borderRadius, borderWidth;
+  double borderRadius, borderWidth, paddingVertical, paddingHorizontal;
   VoidCallback onTap;
   TextStyle? themeText;
 
@@ -37,8 +38,9 @@ class ButtonMainCustom extends StatelessWidget {
         splashColor: splashColor,
         onTap: onTap,
         child: Ink(
-          padding: (const EdgeInsets.symmetric(vertical: 18)),
-          width: getWidth(context),
+          padding: (EdgeInsets.symmetric(
+              vertical: paddingVertical, horizontal: paddingHorizontal)),
+          // width: getWidth(context),
           decoration: BoxDecoration(
             border: Border.all(
               width: borderWidth,
@@ -47,29 +49,28 @@ class ButtonMainCustom extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
             color: backgroundColor,
           ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                isShowIconLeft
-                    ? Row(
-                        children: [
-                          iconLeft ?? const SizedBox(),
-                          8.horizontalSpace,
-                        ],
-                      )
-                    : const SizedBox.shrink(),
-                Text(
-                  title,
-                  style: isShowThemeText
-                      ? themeText
-                      : SettingApp.heding1.copyWith(
-                          fontSize: 16.sp,
-                          color: colorTitle,
-                        ),
-                ),
-              ],
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              isShowIconLeft
+                  ? Row(
+                      children: [
+                        iconLeft ?? const SizedBox(),
+                        8.horizontalSpace,
+                      ],
+                    )
+                  : const SizedBox.shrink(),
+              Text(
+                title,
+                style: isShowThemeText
+                    ? themeText
+                    : SettingApp.heding1.copyWith(
+                        fontSize: 16.sp,
+                        color: colorTitle,
+                      ),
+              ),
+            ],
           ),
         ),
       ),
