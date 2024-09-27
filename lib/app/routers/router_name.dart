@@ -8,4 +8,5 @@ class RouterName {
   static const notificationPage = '/notificationPage';
   static const errorPage = '/errorPage';
   static const movieDetail = '/movieDetail';
+  static const searchPage = '/searchPage';
 }

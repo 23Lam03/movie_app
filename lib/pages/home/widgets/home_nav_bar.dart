@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/pages/search/search_page.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 
 class HomeNavBar extends StatelessWidget {
@@ -30,9 +31,17 @@ class HomeNavBar extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Image.asset(
-                      'assets/images/login/Search.png',
-                      fit: BoxFit.cover,
+                    InkWell(
+                      onTap: () async {
+                        await showSearch(
+                          context: context,
+                          delegate: SearchPage(),
+                        );
+                      },
+                      child: Image.asset(
+                        'assets/images/login/Search.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     20.horizontalSpace,
                     InkWell(
