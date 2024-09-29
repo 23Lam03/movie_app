@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/const/top_movie.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/models/movie_model.dart';
+import 'package:movie_app/pages/download/download_page.dart';
+import 'package:movie_app/pages/explore/explore_page.dart';
 import 'package:movie_app/pages/home/widgets/home_nav_bar.dart';
 import 'package:movie_app/pages/my_list/my_list_page.dart';
-import 'package:movie_app/pages/see_all/see_all_page.dart';
+import 'package:movie_app/pages/profile/profile_page.dart';
 import 'package:movie_app/provider/home_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,17 +20,45 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  int selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
 
-      if (index == 2) {
-        Navigator.push(
+      if (index == 0) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+        );
+      } else if (index == 1) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ExplorePage(),
+          ),
+        );
+      } else if (index == 2) {
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const MyListPage(),
+          ),
+        );
+      } else if (index == 3) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DownloadPage(),
+          ),
+        );
+      } else if (index == 4) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfilePage(),
           ),
         );
       }
@@ -57,33 +88,8 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Top 10 Movies This Week',
-                          style: SettingApp.heding1.copyWith(fontSize: 20.sp),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SeeAllPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'See all',
-                          style: SettingApp.heding2.copyWith(
-                            fontSize: 14.sp,
-                            color: SettingApp.colorText,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  homeTitle(
+                      context, 'Top 10 Movies This Week', TopMovie.PLAYING),
                   16.verticalSpace,
                   SizedBox(
                     height: 200.h,
@@ -136,33 +142,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   16.verticalSpace,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'New Releases',
-                          style: SettingApp.heding1.copyWith(fontSize: 20.sp),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SeeAllPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'See all',
-                          style: SettingApp.heding2.copyWith(
-                            fontSize: 14.sp,
-                            color: SettingApp.colorText,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  homeTitle(context, 'New Releases', TopMovie.RELASES),
                   16.verticalSpace,
                   SizedBox(
                     height: 200.h,
@@ -195,33 +175,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   16.verticalSpace,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Top Rated',
-                          style: SettingApp.heding1.copyWith(fontSize: 20.sp),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SeeAllPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'See all',
-                          style: SettingApp.heding2.copyWith(
-                            fontSize: 14.sp,
-                            color: SettingApp.colorText,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  homeTitle(context, 'Top Rated', TopMovie.RATED),
                   16.verticalSpace,
                   SizedBox(
                     height: 200.h,
@@ -254,33 +208,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   16.verticalSpace,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Upcoming',
-                          style: SettingApp.heding1.copyWith(fontSize: 20.sp),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SeeAllPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'See all',
-                          style: SettingApp.heding2.copyWith(
-                            fontSize: 14.sp,
-                            color: SettingApp.colorText,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  homeTitle(context, 'Upcoming', TopMovie.UPCOMING),
                   16.verticalSpace,
                   SizedBox(
                     height: 200.h,
@@ -320,7 +248,7 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.transparent,
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         selectedItemColor: Colors.red,
         unselectedItemColor: Colors.white,
         onTap: _onItemTapped,
@@ -347,6 +275,39 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Row homeTitle(
+    BuildContext context,
+    String name,
+    TopMovie type,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            name,
+            style: SettingApp.heding1.copyWith(fontSize: 20.sp),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              RouterName.seeAllPage,
+              arguments: {"name": name, "type": type},
+            );
+          },
+          child: Text(
+            'See all',
+            style: SettingApp.heding2.copyWith(
+              fontSize: 14.sp,
+              color: SettingApp.colorText,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

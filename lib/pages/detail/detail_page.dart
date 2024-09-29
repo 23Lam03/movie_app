@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/models/movie_model.dart';
 import 'package:movie_app/models/video_model.dart';
 import 'package:movie_app/provider/detail_provider.dart';
+import 'package:movie_app/provider/home_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailPage extends StatefulWidget {
   final int id;
@@ -273,75 +275,85 @@ class _DetailPageState extends State<DetailPage>
                                 },
                                 itemBuilder: (BuildContext context, int index) {
                                   // moi bo phim
-                                  YoutubePlayerController controller =
-                                      YoutubePlayerController(
-                                    initialVideoId: data[index].key,
-                                    flags: const YoutubePlayerFlags(
-                                      autoPlay: false,
-                                    ),
-                                  );
-                                  return Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 24.w),
-                                    child: AspectRatio(
-                                      aspectRatio: 380 / 113,
-                                      child: Row(
-                                        children: [
-                                          20.horizontalSpace,
-                                          Expanded(
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.r),
-                                                  color: Colors.amber),
-                                              child: YoutubePlayer(
-                                                controller: controller,
-                                              ),
-                                            ),
-                                          ),
-                                          20.horizontalSpace,
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  data[index].name,
-                                                  style: SettingApp.heding1
-                                                      .copyWith(fontSize: 18),
-                                                  maxLines: 1,
-                                                ),
-                                                12.verticalSpace,
-                                                Text(
-                                                  '1m 45s',
-                                                  style: SettingApp.heding2
-                                                      .copyWith(fontSize: 14),
-                                                ),
-                                                12.verticalSpace,
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 10.w,
-                                                      vertical: 6.h),
+
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouterName.videoPage,
+                                        arguments: data[index],
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 24.w),
+                                      child: AspectRatio(
+                                        aspectRatio: 380 / 113,
+                                        child: Row(
+                                          children: [
+                                            20.horizontalSpace,
+                                            Expanded(
+                                              child: Hero(
+                                                tag: data[index].key,
+                                                child: Container(
                                                   decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6.r)),
-                                                  child: Text(
-                                                    'Update',
-                                                    style: SettingApp.heding2
-                                                        .copyWith(
-                                                            fontSize: 10,
-                                                            color: SettingApp
-                                                                .colorText),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        'https://img.youtube.com/vi/${data[index].key}/0.jpg',
+                                                      ),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.r),
                                                   ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                            20.horizontalSpace,
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    data[index].name,
+                                                    style: SettingApp.heding1
+                                                        .copyWith(fontSize: 18),
+                                                    maxLines: 1,
+                                                  ),
+                                                  12.verticalSpace,
+                                                  Text(
+                                                    data[index].site,
+                                                    style: SettingApp.heding2
+                                                        .copyWith(fontSize: 14),
+                                                  ),
+                                                  12.verticalSpace,
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.w,
+                                                            vertical: 6.h),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(6.r)),
+                                                    child: Text(
+                                                      'Update',
+                                                      style: SettingApp.heding2
+                                                          .copyWith(
+                                                              fontSize: 10,
+                                                              color: SettingApp
+                                                                  .colorText),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );
@@ -349,23 +361,54 @@ class _DetailPageState extends State<DetailPage>
                               );
                             },
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24.w),
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 8,
-                              ),
-                              itemCount: 10,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    color: Colors.amber,
+                          Expanded(
+                            child: Consumer<HomeProvider>(
+                              builder: (__, provider, _) {
+                                List<MovieModel> data =
+                                    provider.listMovieNowPlaying;
+                                return GridView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 24,
+                                    childAspectRatio: 168 / 248,
                                   ),
-                                  child: const Text('data'),
+                                  itemCount: data.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          RouterName.movieDetail,
+                                          arguments: {"id": data[index].id},
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                              'https://image.tmdb.org/t/p/w500${data[index].poster_path}',
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              blurRadius: 8,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),

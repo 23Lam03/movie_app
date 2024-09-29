@@ -36,7 +36,7 @@ class VideoModel {
       name: map['name'] ?? '',
       key: map['key'] ?? '',
       site: map['site'] ?? '',
-      size: map['size'] as int,
+      size: map['size'] ?? '',
       type: map['type'] ?? '',
       published_at: map['published_at'] ?? '',
       id: map['id'] ?? '',

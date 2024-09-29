@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/pages/download/download_page.dart';
+import 'package:movie_app/pages/explore/explore_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
+import 'package:movie_app/pages/profile/profile_page.dart';
 
 class MyListPage extends StatefulWidget {
   const MyListPage({super.key});
@@ -11,19 +14,40 @@ class MyListPage extends StatefulWidget {
 }
 
 class _MyListPageState extends State<MyListPage> {
-  int _selectedIndex = 2;
+  int selectedIndex = 2;
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
 
-      switch (index) {
-        case 0:
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          );
-          break;
+      if (index == 0) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+        );
+      } else if (index == 1) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ExplorePage(),
+          ),
+        );
+      } else if (index == 3) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DownloadPage(),
+          ),
+        );
+      } else if (index == 4) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfilePage(),
+          ),
+        );
       }
     });
   }
@@ -97,7 +121,7 @@ class _MyListPageState extends State<MyListPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.transparent,
-        currentIndex: _selectedIndex,
+        currentIndex: selectedIndex,
         selectedItemColor: Colors.red,
         unselectedItemColor: Colors.white,
         onTap: _onItemTapped,

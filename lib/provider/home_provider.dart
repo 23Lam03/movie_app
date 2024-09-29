@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/app/const/top_movie.dart';
 import 'package:movie_app/models/movie_model.dart';
 import 'package:movie_app/repository/movie_repo.dart';
 
@@ -12,26 +13,34 @@ class HomeProvider extends ChangeNotifier {
     await getListMovieNowPlaying();
   }
 
+  Future<List<MovieModel>> getListTop(TopMovie type) async {
+    List<MovieModel> data = await MovieRepo.getListMovieTop(type);
+    return data;
+  }
+
   Future<void> getListMovieNowPlaying() async {
-    List<MovieModel> data = await MovieRepo.getListMovieNowPlaying();
+    List<MovieModel> data = await MovieRepo.getListMovieTop(TopMovie.PLAYING);
     listMovieNowPlaying = data;
     notifyListeners();
   }
 
   Future<void> getListMovieReleases() async {
-    List<MovieModel> dataRelease = await MovieRepo.getListMovieReleases();
+    List<MovieModel> dataRelease =
+        await MovieRepo.getListMovieTop(TopMovie.RELASES);
     listMovieReleases = dataRelease;
     notifyListeners();
   }
 
   Future<void> getListMovieTopRated() async {
-    List<MovieModel> dataTopRated = await MovieRepo.getListMovieTopRated();
+    List<MovieModel> dataTopRated =
+        await MovieRepo.getListMovieTop(TopMovie.RATED);
     listMovieTopRated = dataTopRated;
     notifyListeners();
   }
 
   Future<void> getListMovieUpcoming() async {
-    List<MovieModel> dataUpcoming = await MovieRepo.getListMovieUpcoming();
+    List<MovieModel> dataUpcoming =
+        await MovieRepo.getListMovieTop(TopMovie.UPCOMING);
     listMovieUpcoming = dataUpcoming;
     notifyListeners();
   }
