@@ -229,7 +229,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     20.horizontalSpace,
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            RouterName.securityPage,
+                          );
+                        },
                         icon: const Icon(Icons.keyboard_arrow_right))
                   ],
                 ),
@@ -257,7 +262,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          RouterName.languagePage,
+                        );
+                      },
                       icon: const Icon(Icons.keyboard_arrow_right),
                     )
                   ],
@@ -298,7 +308,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     20.horizontalSpace,
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            RouterName.helpCenterPage,
+                          );
+                        },
                         icon: const Icon(Icons.keyboard_arrow_right))
                   ],
                 ),
@@ -319,7 +334,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     20.horizontalSpace,
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            RouterName.privacyPolicyPage,
+                          );
+                        },
                         icon: const Icon(Icons.keyboard_arrow_right))
                   ],
                 ),

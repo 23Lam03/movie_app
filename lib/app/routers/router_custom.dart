@@ -7,11 +7,15 @@ import 'package:movie_app/pages/download/download_page.dart';
 import 'package:movie_app/pages/download_profile/download_profile_page.dart';
 import 'package:movie_app/pages/edit_profile/edit_profile_page.dart';
 import 'package:movie_app/pages/explore/explore_page.dart';
+import 'package:movie_app/pages/help_center/help_center_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
+import 'package:movie_app/pages/language/language_page.dart';
 import 'package:movie_app/pages/login/login_page.dart';
 import 'package:movie_app/pages/notification/notification_page.dart';
 import 'package:movie_app/pages/notification_profile/notification_profile_page.dart';
+import 'package:movie_app/pages/privacy_policy/privacy_policy_page.dart';
 import 'package:movie_app/pages/profile/profile_page.dart';
+import 'package:movie_app/pages/security/security_page.dart';
 import 'package:movie_app/pages/see_all/see_all_page.dart';
 import 'package:movie_app/pages/video/video_page.dart';
 import 'package:movie_app/pages/welcome/welcome_page.dart';
@@ -96,6 +100,26 @@ class RouterCustom {
       case RouterName.downloadProfilePage:
         return PageTransition(
           child: const DownloadProfilePage(),
+          type: PageTransitionType.fade,
+        );
+      case RouterName.securityPage:
+        return PageTransition(
+          child: const SecurityPage(),
+          type: PageTransitionType.fade,
+        );
+      case RouterName.languagePage:
+        return PageTransition(
+          child: const LanguagePage(),
+          type: PageTransitionType.fade,
+        );
+      case RouterName.privacyPolicyPage:
+        return PageTransition(
+          child: const PrivacyPolicyPage(),
+          type: PageTransitionType.fade,
+        );
+      case RouterName.helpCenterPage:
+        return PageTransition(
+          child: const HelpCenterPage(),
           type: PageTransitionType.fade,
         );
       default:

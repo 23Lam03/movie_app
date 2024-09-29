@@ -16,4 +16,8 @@ class RouterName {
   static const downloadPage = '/downloadPage';
   static const notificationProfilePage = '/notificationProfilePage';
   static const downloadProfilePage = '/downloadProfilePage';
+  static const securityPage = '/securityPage';
+  static const languagePage = '/languagePage';
+  static const privacyPolicyPage = '/privacyPolicyPage';
+  static const helpCenterPage = '/helpCenterPage';
 }

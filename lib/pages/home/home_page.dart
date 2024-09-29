@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
             const HomeNavBar(),
             24.verticalSpace,
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

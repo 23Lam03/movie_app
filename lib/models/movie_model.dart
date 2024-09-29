@@ -37,11 +37,11 @@ class MovieModel {
   factory MovieModel.fromMap(Map<String, dynamic> map) {
     return MovieModel(
       id: map['id'] as int,
-      title: map['title'] as String,
-      overview: map['overview'] as String,
+      title: map['title'] ?? '',
+      overview: map['overview'] ?? '',
       vote_average: map['vote_average'] as double,
-      poster_path: map['poster_path'] as String,
-      release_date: map['release_date'] as String,
+      poster_path: map['poster_path'] ?? '',
+      release_date: map['release_date'] ?? '',
       genre_ids: List<int>.from(map['genre_ids']),
       vote_count: map['vote_count'] as int,
     );
