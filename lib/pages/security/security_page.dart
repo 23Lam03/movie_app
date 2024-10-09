@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
+import 'package:movie_app/widgets/switch_case.dart';
 
 class SecurityPage extends StatelessWidget {
   const SecurityPage({super.key});
@@ -94,10 +95,7 @@ class SecurityPage extends StatelessWidget {
                         style: SettingApp.heding1.copyWith(fontSize: 20.sp),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.keyboard_arrow_right),
-                    ),
+                    const SwitchCase(),
                   ],
                 ),
                 24.verticalSpace,
@@ -109,10 +107,7 @@ class SecurityPage extends StatelessWidget {
                         style: SettingApp.heding1.copyWith(fontSize: 20.sp),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.keyboard_arrow_right),
-                    ),
+                    const SwitchCase(),
                   ],
                 ),
                 24.verticalSpace,
@@ -124,10 +119,7 @@ class SecurityPage extends StatelessWidget {
                         style: SettingApp.heding1.copyWith(fontSize: 20.sp),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.keyboard_arrow_right),
-                    ),
+                    const SwitchCase(),
                   ],
                 ),
                 24.verticalSpace,

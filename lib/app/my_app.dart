@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:movie_app/app/routers/router_custom.dart';
-import 'package:movie_app/pages/home/home_page.dart';
+import 'package:movie_app/pages/login/login_page.dart';
+import 'package:movie_app/provider/auth_provider.dart';
+import 'package:movie_app/provider/auth_registet_provider.dart';
 import 'package:movie_app/provider/detail_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
-import 'package:movie_app/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
@@ -25,15 +26,21 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (context) => DetailProvider(),
             ),
+            // ChangeNotifierProvider(
+            //   create: (context) => SearchProvider(),
+            // )
             ChangeNotifierProvider(
-              create: (context) => SearchProvider(),
+              create: (context) => AuthProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => AuthRegistetProvider(),
             )
           ],
           child: GlobalLoaderOverlay(
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
               onGenerateRoute: RouterCustom.onGenerateRoute,
-              home: const HomePage(),
+              home: const LoginPage(),
               theme: ThemeData.dark(),
             ),
           ),

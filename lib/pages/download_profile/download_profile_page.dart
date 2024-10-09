@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/widgets/switch_case.dart';
 
 class DownloadProfilePage extends StatelessWidget {
   const DownloadProfilePage({super.key});
@@ -43,6 +44,7 @@ class DownloadProfilePage extends StatelessWidget {
                         style: SettingApp.heding2.copyWith(fontSize: 18.sp),
                       ),
                     ),
+                    const SwitchCase(),
                     20.horizontalSpace,
                   ],
                 ),

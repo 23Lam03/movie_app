@@ -4,12 +4,9 @@ import 'package:movie_app/app/const/top_movie.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/models/movie_model.dart';
-import 'package:movie_app/pages/download/download_page.dart';
-import 'package:movie_app/pages/explore/explore_page.dart';
 import 'package:movie_app/pages/home/widgets/home_nav_bar.dart';
-import 'package:movie_app/pages/my_list/my_list_page.dart';
-import 'package:movie_app/pages/profile/profile_page.dart';
 import 'package:movie_app/provider/home_provider.dart';
+import 'package:movie_app/widgets/loading/home_loading.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,51 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-
-      if (index == 0) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
-      } else if (index == 1) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ExplorePage(),
-          ),
-        );
-      } else if (index == 2) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MyListPage(),
-          ),
-        );
-      } else if (index == 3) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DownloadPage(),
-          ),
-        );
-      } else if (index == 4) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ProfilePage(),
-          ),
-        );
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -98,8 +50,7 @@ class _HomePageState extends State<HomePage> {
                         List<MovieModel> listMovies =
                             provider.listMovieNowPlaying;
                         if (listMovies.isEmpty) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return const HomeLoading();
                         }
                         return ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -245,35 +196,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.white,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'My List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud_download),
-            label: 'Download',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }

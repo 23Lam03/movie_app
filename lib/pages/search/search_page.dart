@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/models/movie_model.dart';
+import 'package:movie_app/app/routers/router_name.dart';
+import 'package:movie_app/models/movie_search_model.dart';
 import 'package:movie_app/provider/search_provider.dart';
+import 'package:movie_app/widgets/empty_data.dart';
+import 'package:movie_app/widgets/loading/search_loading.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends SearchDelegate {
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
-  }
-
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -31,23 +29,47 @@ class SearchPage extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty) return Container();
+    // Provider.of<SearchProvider>(context, listen: false).getSearch(query);
+    return ChangeNotifierProvider(
+      create: (context) => SearchProvider(),
+      builder: (context, child) {
+        Provider.of<SearchProvider>(context, listen: false).getSearch(query);
 
-    return FutureBuilder(
-      future:
-          Provider.of<SearchProvider>(context, listen: false).getSearch(query),
-      initialData: const [],
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        List<MovieModel> search = snapshot.data as List<MovieModel>;
-
-        return ListView.builder(
-          itemCount: search.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(search[index].poster_path),
-              ),
-              title: Text(search[index].title),
+        return StreamBuilder(
+          stream: context.read<SearchProvider>().streamController.stream,
+          initialData: const [],
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SearchLoading();
+            }
+            if (!snapshot.hasData || (snapshot.data as List).isEmpty) {
+              return const EmptyData();
+            }
+            List<MovieSearchModel> search =
+                snapshot.data as List<MovieSearchModel>;
+            return ListView.builder(
+              itemCount: search.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      RouterName.movieDetail,
+                      arguments: {"id": search[index].id},
+                    );
+                  },
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      foregroundImage: NetworkImage(
+                        'https://image.tmdb.org/t/p/w500${search[index].backdrop_path}',
+                      ),
+                      backgroundImage: const NetworkImage(
+                          'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg'),
+                    ),
+                    title: Text(search[index].name),
+                  ),
+                );
+              },
             );
           },
         );
@@ -57,25 +79,23 @@ class SearchPage extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return FutureBuilder(
-      future:
-          Provider.of<SearchProvider>(context, listen: false).getSearch(query),
-      initialData: const [],
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
-          return const CircularProgressIndicator();
-        List<MovieModel> search = snapshot.data as List<MovieModel>;
+    return Container();
+    // Provider.of<SearchProvider>(context, listen: false).getSearch(query);
 
-        return ListView.builder(
-          itemCount: search.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(search[index].title),
-              onTap: () {},
-            );
-          },
-        );
-      },
-    );
+    // return Consumer<SearchProvider>(
+    //   builder: (context, provider, _) {
+    //     List<MovieDetailModel> search = provider.searchResults;
+
+    //     return ListView.builder(
+    //       itemCount: search.length,
+    //       itemBuilder: (context, index) {
+    //         return ListTile(
+    //           title: Text(search[index].title),
+    //           onTap: () {},
+    //         );
+    //       },
+    //     );
+    //   },
+    // );
   }
 }

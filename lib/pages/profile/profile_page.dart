@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
-import 'package:movie_app/pages/download/download_page.dart';
-import 'package:movie_app/pages/explore/explore_page.dart';
-import 'package:movie_app/pages/home/home_page.dart';
-import 'package:movie_app/pages/my_list/my_list_page.dart';
+import 'package:movie_app/widgets/switch_case.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,43 +12,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int selectedIndex = 4;
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-
-      if (index == 0) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
-      } else if (index == 1) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ExplorePage(),
-          ),
-        );
-      } else if (index == 2) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MyListPage(),
-          ),
-        );
-      } else if (index == 3) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DownloadPage(),
-          ),
-        );
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,11 +36,25 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 24.verticalSpace,
-                Image.asset(
-                  'assets/images/profile/AndrewAinsley.png',
-                  fit: BoxFit.cover,
-                  width: 120.w,
-                  height: 120.h,
+                Stack(
+                  children: [
+                    Image.asset(
+                      'assets/images/profile/AndrewAinsley.png',
+                      fit: BoxFit.cover,
+                      width: 120.w,
+                      height: 120.h,
+                    ),
+                    Positioned(
+                      top: 90,
+                      left: 90,
+                      child: Image.asset(
+                        'assets/images/profile/EditSquare.png',
+                        fit: BoxFit.cover,
+                        width: 30.w,
+                        height: 30.h,
+                      ),
+                    ),
+                  ],
                 ),
                 12.verticalSpace,
                 Text(
@@ -141,136 +115,133 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 24.verticalSpace,
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/profile/EditProfile.png',
-                      width: 28.w,
-                      height: 28.h,
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'Edit Profile',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouterName.editProfilePage);
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/profile/EditProfile.png',
+                        width: 28.w,
+                        height: 28.h,
                       ),
-                    ),
-                    20.horizontalSpace,
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, RouterName.editProfilePage);
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_right))
-                  ],
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Edit Profile',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
+                      ),
+                      20.horizontalSpace,
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
                 ),
                 20.verticalSpace,
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/profile/Notification.png',
-                      width: 28.w,
-                      height: 28.h,
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'Notification',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, RouterName.notificationProfilePage);
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/profile/Notification.png',
+                        width: 28.w,
+                        height: 28.h,
                       ),
-                    ),
-                    20.horizontalSpace,
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, RouterName.notificationProfilePage);
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_right))
-                  ],
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Notification',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
+                      ),
+                      20.horizontalSpace,
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
                 ),
                 20.verticalSpace,
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/profile/Download.png',
-                      width: 28.w,
-                      height: 28.h,
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'Download',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, RouterName.downloadProfilePage);
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/profile/Download.png',
+                        width: 28.w,
+                        height: 28.h,
                       ),
-                    ),
-                    20.horizontalSpace,
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                              context, RouterName.downloadProfilePage);
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_right))
-                  ],
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Download',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
+                      ),
+                      20.horizontalSpace,
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
                 ),
                 20.verticalSpace,
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/profile/Security.png',
-                      width: 28.w,
-                      height: 28.h,
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'Security',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouterName.securityPage);
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/profile/Security.png',
+                        width: 28.w,
+                        height: 28.h,
                       ),
-                    ),
-                    20.horizontalSpace,
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            RouterName.securityPage,
-                          );
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_right))
-                  ],
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Security',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
+                      ),
+                      20.horizontalSpace,
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
                 ),
                 20.verticalSpace,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      'assets/images/profile/Language.png',
-                      width: 28.w,
-                      height: 28.h,
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'Language',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouterName.languagePage);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        'assets/images/profile/Language.png',
+                        width: 28.w,
+                        height: 28.h,
                       ),
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'English (US)',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Language',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          RouterName.languagePage,
-                        );
-                      },
-                      icon: const Icon(Icons.keyboard_arrow_right),
-                    )
-                  ],
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'English (US)',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
                 ),
                 20.verticalSpace,
                 Row(
@@ -288,94 +259,62 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: SettingApp.heding2.copyWith(fontSize: 18),
                       ),
                     ),
+                    const SwitchCase(),
                     20.horizontalSpace,
                   ],
                 ),
                 20.verticalSpace,
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/profile/HelpCenter.png',
-                      width: 28.w,
-                      height: 28.h,
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'Help Center',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouterName.helpCenterPage);
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/profile/HelpCenter.png',
+                        width: 28.w,
+                        height: 28.h,
                       ),
-                    ),
-                    20.horizontalSpace,
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            RouterName.helpCenterPage,
-                          );
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_right))
-                  ],
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Help Center',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
+                      ),
+                      20.horizontalSpace,
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
                 ),
                 20.verticalSpace,
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/profile/PrivacyPolicy.png',
-                      width: 28.w,
-                      height: 28.h,
-                    ),
-                    20.horizontalSpace,
-                    Expanded(
-                      child: Text(
-                        'Privacy Policy',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouterName.privacyPolicyPage);
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/profile/PrivacyPolicy.png',
+                        width: 28.w,
+                        height: 28.h,
                       ),
-                    ),
-                    20.horizontalSpace,
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            RouterName.privacyPolicyPage,
-                          );
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_right))
-                  ],
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Text(
+                          'Privacy Policy',
+                          style: SettingApp.heding2.copyWith(fontSize: 18),
+                        ),
+                      ),
+                      20.horizontalSpace,
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.white,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'My List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud_download),
-            label: 'Download',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }

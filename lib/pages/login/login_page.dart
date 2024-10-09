@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/provider/auth_provider.dart';
 import 'package:movie_app/utils/get_size.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/input_custom.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,9 +26,23 @@ class _LoginPageState extends State<LoginPage> {
     context.loaderOverlay.show();
 
     if (_formKey.currentState!.validate()) {
-      await Future.delayed(const Duration(seconds: 2));
+      bool isLogin = await context.read<AuthProvider>().login(
+            emailController.text,
+            passwordController.text,
+          );
       context.loaderOverlay.hide();
-      Navigator.pushReplacementNamed(context, RouterName.homePage);
+      if (isLogin) {
+        Navigator.pushReplacementNamed(context, RouterName.homePage);
+      } else {
+        // Show a SnackBar if login fails
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Center(
+              child: Text('Login failed. Please try again.'),
+            ),
+          ),
+        );
+      }
     } else {
       context.loaderOverlay.hide();
     }
@@ -111,7 +127,6 @@ class _LoginPageState extends State<LoginPage> {
               20.verticalSpace,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Checkbox(
                     checkColor: Colors.white,
@@ -131,15 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               20.verticalSpace,
-              ButtonMainCustom(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    RouterName.homePage,
-                  );
-                },
-                title: 'Sign up',
-              ),
+              ButtonMainCustom(onTap: submit, title: 'Login'),
               39.verticalSpace,
               Row(
                 children: [
@@ -210,11 +217,16 @@ class _LoginPageState extends State<LoginPage> {
                     style: SettingApp.heding4,
                   ),
                   8.horizontalSpace,
-                  Text(
-                    'Sign up',
-                    style: SettingApp.heding1.copyWith(
-                      fontSize: 14,
-                      color: SettingApp.colorText,
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, RouterName.registerPage);
+                    },
+                    child: Text(
+                      'Sign up',
+                      style: SettingApp.heding1.copyWith(
+                        fontSize: 14,
+                        color: SettingApp.colorText,
+                      ),
                     ),
                   ),
                 ],

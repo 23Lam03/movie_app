@@ -8,7 +8,7 @@ class HomeProvider extends ChangeNotifier {
   List<MovieModel> listMovieReleases = [];
   List<MovieModel> listMovieTopRated = [];
   List<MovieModel> listMovieUpcoming = [];
-
+  bool isLoading = true;
   Future<void> initHome() async {
     await getListMovieNowPlaying();
   }

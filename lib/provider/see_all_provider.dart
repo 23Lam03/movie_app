@@ -10,7 +10,7 @@ class SeeAllProvider extends ChangeNotifier {
   List<MovieModel> listData = [];
   int page = 1;
   TopMovie typeMovie = TopMovie.PLAYING;
-
+  bool isLoading = true;
   void onRefresh() async {
     page = 1;
     getListTop(typeMovie);

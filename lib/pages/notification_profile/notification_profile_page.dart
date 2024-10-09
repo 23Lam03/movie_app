@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/widgets/switch_case.dart';
 
-class NotificationProfilePage extends StatelessWidget {
+class NotificationProfilePage extends StatefulWidget {
   const NotificationProfilePage({super.key});
+
+  @override
+  State<NotificationProfilePage> createState() =>
+      _NotificationProfilePageState();
+}
+
+class _NotificationProfilePageState extends State<NotificationProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +42,10 @@ class NotificationProfilePage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'General Notification',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                        style: SettingApp.heding2.copyWith(fontSize: 18.sp),
                       ),
                     ),
+                    const SwitchCase()
                   ],
                 ),
                 28.verticalSpace,
@@ -45,9 +54,10 @@ class NotificationProfilePage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'New Arrival',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                        style: SettingApp.heding2.copyWith(fontSize: 18.sp),
                       ),
                     ),
+                    const SwitchCase()
                   ],
                 ),
                 28.verticalSpace,
@@ -56,9 +66,10 @@ class NotificationProfilePage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'New Services Available',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                        style: SettingApp.heding2.copyWith(fontSize: 18.sp),
                       ),
                     ),
+                    const SwitchCase()
                   ],
                 ),
                 28.verticalSpace,
@@ -67,9 +78,10 @@ class NotificationProfilePage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'New Releases Movie',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                        style: SettingApp.heding2.copyWith(fontSize: 18.sp),
                       ),
                     ),
+                    const SwitchCase()
                   ],
                 ),
                 28.verticalSpace,
@@ -78,9 +90,10 @@ class NotificationProfilePage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'App Updates',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                        style: SettingApp.heding2.copyWith(fontSize: 18.sp),
                       ),
                     ),
+                    const SwitchCase()
                   ],
                 ),
                 28.verticalSpace,
@@ -89,9 +102,10 @@ class NotificationProfilePage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Subscription',
-                        style: SettingApp.heding2.copyWith(fontSize: 18),
+                        style: SettingApp.heding2.copyWith(fontSize: 18.sp),
                       ),
                     ),
+                    const SwitchCase()
                   ],
                 ),
               ],

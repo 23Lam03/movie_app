@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/helper/format_number.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/models/movie_model.dart';
@@ -7,6 +8,7 @@ import 'package:movie_app/models/video_model.dart';
 import 'package:movie_app/provider/detail_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
+import 'package:movie_app/widgets/loading/detail_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 
@@ -44,7 +46,7 @@ class _DetailPageState extends State<DetailPage>
 
     return Scaffold(
       body: movieDetail == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const DetailLoading()
           : SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Consumer<DetailProvider>(builder: (_, provider, __) {
@@ -116,7 +118,8 @@ class _DetailPageState extends State<DetailPage>
                               ),
                               8.horizontalSpace,
                               Text(
-                                movieDetail.vote_average.toString(),
+                                FormatNumber.hanldeFormat(
+                                    movieDetail.vote_average),
                                 style: SettingApp.heding3.copyWith(
                                   fontSize: 12,
                                   color: SettingApp.colorText,

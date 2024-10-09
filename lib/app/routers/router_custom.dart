@@ -15,6 +15,7 @@ import 'package:movie_app/pages/notification/notification_page.dart';
 import 'package:movie_app/pages/notification_profile/notification_profile_page.dart';
 import 'package:movie_app/pages/privacy_policy/privacy_policy_page.dart';
 import 'package:movie_app/pages/profile/profile_page.dart';
+import 'package:movie_app/pages/register/register_page.dart';
 import 'package:movie_app/pages/security/security_page.dart';
 import 'package:movie_app/pages/see_all/see_all_page.dart';
 import 'package:movie_app/pages/video/video_page.dart';
@@ -122,6 +123,12 @@ class RouterCustom {
           child: const HelpCenterPage(),
           type: PageTransitionType.fade,
         );
+      case RouterName.registerPage:
+        return PageTransition(
+          child: const RegisterPage(),
+          type: PageTransitionType.fade,
+        );
+
       default:
         return null;
     }

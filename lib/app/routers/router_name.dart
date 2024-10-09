@@ -20,4 +20,6 @@ class RouterName {
   static const languagePage = '/languagePage';
   static const privacyPolicyPage = '/privacyPolicyPage';
   static const helpCenterPage = '/helpCenterPage';
+  static const sortFilterPage = '/sortFilterPage';
+  static const registerPage = '/registerPage';
 }

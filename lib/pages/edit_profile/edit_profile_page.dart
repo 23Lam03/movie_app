@@ -3,9 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/utils/get_size.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
+import 'package:movie_app/widgets/input_custom.dart';
+import 'package:movie_app/widgets/input_name_custom.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
+
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,70 +42,56 @@ class EditProfilePage extends StatelessWidget {
                   ],
                 ),
                 24.verticalSpace,
-                Image.asset(
-                  'assets/images/profile/AndrewAinsley.png',
-                  fit: BoxFit.cover,
-                  width: 120.w,
-                  height: 120.h,
-                ),
-                24.verticalSpace,
-                Container(
-                  width: getWidth(context),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    color: const Color(0xff1F222A),
-                  ),
-                  child: Text(
-                    'Andrew Ainsley',
-                    style: SettingApp.heding2.copyWith(
-                      fontSize: 14.sp,
+                Stack(
+                  children: [
+                    Image.asset(
+                      'assets/images/profile/AndrewAinsley.png',
+                      fit: BoxFit.cover,
+                      width: 120.w,
+                      height: 120.h,
                     ),
-                  ),
-                ),
-                24.verticalSpace,
-                Container(
-                  width: getWidth(context),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    color: const Color(0xff1F222A),
-                  ),
-                  child: Text(
-                    'Andrew',
-                    style: SettingApp.heding2.copyWith(
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                ),
-                24.verticalSpace,
-                Container(
-                  width: getWidth(context),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    color: const Color(0xff1F222A),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'andrew_ainsley@yourdomain.com',
-                          style: SettingApp.heding2.copyWith(
-                            fontSize: 14.sp,
-                          ),
-                        ),
+                    Positioned(
+                      top: 90,
+                      left: 90,
+                      child: Image.asset(
+                        'assets/images/profile/EditSquare.png',
+                        fit: BoxFit.cover,
+                        width: 30.w,
+                        height: 30.h,
                       ),
-                      Image.asset(
-                        'assets/images/profile/Email.png',
-                        width: 20.w,
-                        height: 20.h,
-                      )
-                    ],
+                    ),
+                  ],
+                ),
+                24.verticalSpace,
+                InputNameCustom(
+                  controller: fullNameController,
+                  hintText: 'Andrew Ainsley',
+                ),
+                24.verticalSpace,
+                InputNameCustom(
+                  controller: nameController,
+                  hintText: 'Andrew',
+                ),
+                24.verticalSpace,
+                InputCustom(
+                  controller: emailController,
+                  hintText: 'andrew_ainsley@yourdomain.com',
+                  prefixIcon: Image.asset(
+                    'assets/images/profile/Email.png',
+                    width: 20.w,
+                    height: 20.h,
                   ),
+                  filled: false,
+                  fillColor: const Color(0xff1F222A),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
                 ),
                 24.verticalSpace,
                 Container(

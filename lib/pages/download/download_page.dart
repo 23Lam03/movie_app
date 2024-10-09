@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/pages/explore/explore_page.dart';
-import 'package:movie_app/pages/home/home_page.dart';
-import 'package:movie_app/pages/my_list/my_list_page.dart';
-import 'package:movie_app/pages/profile/profile_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/setting_app.dart';
 
 class DownloadPage extends StatefulWidget {
   const DownloadPage({super.key});
@@ -12,75 +10,38 @@ class DownloadPage extends StatefulWidget {
 }
 
 class _DownloadPageState extends State<DownloadPage> {
-  int selectedIndex = 3;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-
-      if (index == 0) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
-      } else if (index == 1) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ExplorePage(),
-          ),
-        );
-      } else if (index == 2) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MyListPage(),
-          ),
-        );
-      } else if (index == 4) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ProfilePage(),
-          ),
-        );
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.white,
-        onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                'assets/images/login/LogoM.png',
+                width: 32.w,
+                height: 32.h,
+              ),
+              16.horizontalSpace,
+              Expanded(
+                child: Text(
+                  'Download',
+                  style: SettingApp.heding1.copyWith(fontSize: 24.sp),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 16.w),
+                child: Image.asset(
+                  'assets/images/login/Search.png',
+                  width: 28.w,
+                  height: 28.h,
+                ),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'My List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud_download),
-            label: 'Download',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
+        ),
       ),
     );
   }
