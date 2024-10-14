@@ -416,7 +416,86 @@ class _DetailPageState extends State<DetailPage>
                               },
                             ),
                           ),
-                          const Center(child: Text('Comments')),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Comments',
+                                      style: SettingApp.heding1.copyWith(
+                                        fontSize: 18.sp,
+                                      ),
+                                    ),
+                                    Text(
+                                      'See all',
+                                      style: SettingApp.heding2.copyWith(
+                                        fontSize: 16.sp,
+                                        color: SettingApp.colorText,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: 4,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Column(
+                                        children: [
+                                          24.horizontalSpace,
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/detail/avatadetail.png',
+                                                width: 48.w,
+                                                height: 48.h,
+                                              ),
+                                              16.horizontalSpace,
+                                              Expanded(
+                                                child: Text(
+                                                  'Kristin Watson',
+                                                  style: SettingApp.heding1
+                                                      .copyWith(
+                                                          fontSize: 16.sp),
+                                                ),
+                                              ),
+                                              Image.asset(
+                                                'assets/images/detail/MoreCircle.png',
+                                                color: const Color(0xffFFFFFF),
+                                                width: 18.w,
+                                                height: 18.h,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ],
+                                          ),
+                                          12.verticalSpace,
+                                          Text(
+                                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
+                                            style: SettingApp.heding4,
+                                          ),
+                                          12.verticalSpace,
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.favorite),
+                                              8.horizontalSpace,
+                                              const Text('938'),
+                                              24.horizontalSpace,
+                                              const Text('3 days ago'),
+                                            ],
+                                          ),
+                                          29.verticalSpace,
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

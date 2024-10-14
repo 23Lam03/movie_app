@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:movie_app/app/const/accout.dart';
+import 'package:movie_app/app/helper/share_pre.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/provider/auth_provider.dart';
+import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/utils/get_size.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/input_custom.dart';
@@ -32,7 +35,9 @@ class _LoginPageState extends State<LoginPage> {
           );
       context.loaderOverlay.hide();
       if (isLogin) {
-        Navigator.pushReplacementNamed(context, RouterName.homePage);
+        String uID = await SharePre.getString(Accout.keyUserId);
+        context.read<SettingAppProvider>().updateUid(uID);
+        Navigator.pushReplacementNamed(context, RouterName.bottomNavi);
       } else {
         // Show a SnackBar if login fails
         ScaffoldMessenger.of(context).showSnackBar(
@@ -219,7 +224,14 @@ class _LoginPageState extends State<LoginPage> {
                   8.horizontalSpace,
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, RouterName.registerPage);
+                      Navigator.pushNamed(context, RouterName.registerPage)
+                          .then(
+                        (value) {
+                          Map dta = value as Map;
+                          emailController.text = dta['email'];
+                          passwordController.text = dta['password'];
+                        },
+                      );
                     },
                     child: Text(
                       'Sign up',

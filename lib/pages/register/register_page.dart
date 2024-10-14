@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/pages/register/widgets/register_comfirm_password.dart';
+import 'package:movie_app/pages/register/widgets/register_email.dart';
+import 'package:movie_app/pages/register/widgets/register_name_and_usename.dart';
+import 'package:movie_app/pages/register/widgets/register_password.dart';
+import 'package:movie_app/pages/register/widgets/register_phone.dart';
 import 'package:movie_app/provider/auth_registet_provider.dart';
+import 'package:movie_app/utils/get_size.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
-import 'package:movie_app/widgets/input_custom.dart';
-import 'package:movie_app/widgets/input_name_custom.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -17,13 +21,18 @@ class RegisterPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-
+  TextEditingController emailController =
+      TextEditingController(text: 'j@gmail.com');
+  TextEditingController passwordController =
+      TextEditingController(text: '238130');
+  TextEditingController confirmPasswordController =
+      TextEditingController(text: '238130');
+  TextEditingController nameController = TextEditingController(text: 'nbm');
+  TextEditingController userNameController =
+      TextEditingController(text: 'sdfsf');
+  TextEditingController phoneNumberController =
+      TextEditingController(text: '2341241');
+  String gender = 'Male';
   @override
   void dispose() {
     emailController.dispose();
@@ -46,15 +55,27 @@ class _RegistrationPageState extends State<RegisterPage> {
         userNameController.text,
         phoneNumberController.text,
       );
+      print('asghdhj$isRegistered');
       if (isRegistered) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registered successfully!')),
-        );
+        Navigator.pop(context, {
+          "email": emailController.text,
+          "password": passwordController.text
+        });
 
-        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Center(
+              child: Text('Registered successfully!'),
+            ),
+          ),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration failed!')),
+          const SnackBar(
+            content: Center(
+              child: Text('Registration failed!'),
+            ),
+          ),
         );
       }
     }
@@ -85,74 +106,52 @@ class _RegistrationPageState extends State<RegisterPage> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      InputCustom(
-                        controller: emailController,
-                        prefixIcon: const Icon(Icons.email),
-                        hintText: 'Email',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
-                      ),
+                      RegisterEmail(emailController: emailController),
                       20.verticalSpace,
-                      InputCustom(
-                        controller: passwordController,
-                        prefixIcon: const Icon(Icons.lock),
-                        hintText: 'Password',
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          if (value.length < 6) {
-                            return 'Password must be at least 6 characters long';
-                          }
-                          return null;
-                        },
-                      ),
+                      RegisterPassword(passwordController: passwordController),
                       20.verticalSpace,
-                      InputCustom(
-                        controller: confirmPasswordController,
-                        prefixIcon: const Icon(Icons.lock),
-                        hintText: 'Confirm password',
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          if (value != passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                      ),
+                      RegisterComfirmPassword(
+                          confirmPasswordController: confirmPasswordController,
+                          passwordController: passwordController),
                       20.verticalSpace,
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InputNameCustom(
-                              controller: nameController,
-                              hintText: 'Name',
-                            ),
+                      RegisterNameAndUseName(
+                          nameController: nameController,
+                          userNameController: userNameController),
+                      20.verticalSpace,
+                      RegisterPhone(
+                          phoneNumberController: phoneNumberController),
+                      20.verticalSpace,
+                      Container(
+                        width: getWidth(context),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 9.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          color: const Color(0xff1F222A),
+                        ),
+                        child: DropdownButton<String>(
+                          value: gender,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          iconSize: 24.sp,
+                          underline: const SizedBox(),
+                          isExpanded: true,
+                          style: SettingApp.heding2.copyWith(
+                            fontSize: 14.sp,
+                            color: Colors.white,
                           ),
-                          10.horizontalSpace,
-                          Expanded(
-                            child: InputNameCustom(
-                              controller: userNameController,
-                              hintText: 'UserName',
-                            ),
-                          ),
-                        ],
-                      ),
-                      20.verticalSpace,
-                      InputNameCustom(
-                        controller: phoneNumberController,
-                        hintText: 'Phone Number',
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              gender = newValue!;
+                            });
+                          },
+                          items: <String>['Male', 'Female']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                       ),
                       20.verticalSpace,
                       ButtonMainCustom(
@@ -162,7 +161,7 @@ class _RegistrationPageState extends State<RegisterPage> {
                       20.verticalSpace,
                       InkWell(
                         onTap: () {
-                          Navigator.pop(context);
+                          Navigator.pop(context, {'email': '', 'password': ''});
                         },
                         child: Text(
                           'Back to Login',

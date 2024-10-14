@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/models/movie_genre.dart';
 import 'package:movie_app/models/movie_model.dart';
+import 'package:movie_app/provider/genre_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/loading/explore_loading.dart';
@@ -210,28 +212,32 @@ Widget _category(String title) {
       16.verticalSpace,
       SizedBox(
         height: 60.h,
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 20.h),
-          scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: EdgeInsets.only(right: 8.w),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: SettingApp.colorText),
-                  borderRadius: BorderRadius.circular(100.r),
+        child: Consumer<GenreProvider>(builder: (_, provider, __) {
+          List<MovieGenre> genre = provider.listGenre;
+          return ListView.builder(
+            padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 20.h),
+            scrollDirection: Axis.horizontal,
+            itemCount: 5,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: EdgeInsets.only(right: 8.w),
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: SettingApp.colorText),
+                    borderRadius: BorderRadius.circular(100.r),
+                  ),
+                  child: Text(
+                    'dssdfsd',
+                    style: SettingApp.heding2
+                        .copyWith(fontSize: 16.sp, color: SettingApp.colorText),
+                  ),
                 ),
-                child: Text(
-                  'Movie',
-                  style: SettingApp.heding2
-                      .copyWith(fontSize: 16.sp, color: SettingApp.colorText),
-                ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          );
+        }),
       ),
     ],
   );

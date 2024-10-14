@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AuthRegistetProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // Đăng ký người dùng và lưu thông tin bổ sung vào Firestore
   Future<bool> register(String email, String password, String name,
@@ -18,7 +18,7 @@ class AuthRegistetProvider extends ChangeNotifier {
       );
 
       // Lưu thông tin người dùng vào Firestore
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+      await firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': email,
         'name': name,
         'userName': userName,

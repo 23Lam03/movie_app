@@ -15,6 +15,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/app/const/accout.dart';
+import 'package:movie_app/app/helper/share_pre.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -22,7 +24,12 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> login(String email, String password) async {
     try {
       //Đăng nhập xác thực Firebase
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential user = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      // user.user.uid;
+      if (user.user!.uid.isNotEmpty) {
+        SharePre.setString(Accout.keyUserId, user.user!.uid);
+      }
       return true; // Successful login
     } on FirebaseAuthException catch (e) {
       // Xử lý lỗi đăng nhập
@@ -32,5 +39,9 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<void> logout() async {
+    SharePre.remove(Accout.keyUserId);
   }
 }

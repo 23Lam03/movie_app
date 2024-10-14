@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/app/const/top_movie.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/models/video_model.dart';
+import 'package:movie_app/pages/bottom_navi/bottom_navi.dart';
 import 'package:movie_app/pages/detail/detail_page.dart';
 import 'package:movie_app/pages/download/download_page.dart';
 import 'package:movie_app/pages/download_profile/download_profile_page.dart';
@@ -85,7 +86,7 @@ class RouterCustom {
         );
       case RouterName.editProfilePage:
         return PageTransition(
-          child: const EditProfilePage(),
+          child: const EditProfilePage(uId: 'user'),
           type: PageTransitionType.fade,
         );
       case RouterName.downloadPage:
@@ -128,7 +129,11 @@ class RouterCustom {
           child: const RegisterPage(),
           type: PageTransitionType.fade,
         );
-
+      case RouterName.bottomNavi:
+        return PageTransition(
+          child: const BottomNavi(),
+          type: PageTransitionType.fade,
+        );
       default:
         return null;
     }

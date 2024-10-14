@@ -1,74 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/app/const/top_movie.dart';
+import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
-import 'package:movie_app/models/movie_model.dart';
-import 'package:movie_app/provider/home_provider.dart';
-import 'package:provider/provider.dart';
 
-class HomeList extends StatefulWidget {
-  HomeList({
+class HomeList extends StatelessWidget {
+  const HomeList({
     super.key,
-    this.title = 'Top 10 Movies This Week',
+    required this.context,
+    required this.name,
+    required this.type,
   });
-  String title;
 
-  @override
-  State<HomeList> createState() => _HomeListState();
-}
+  final BuildContext context;
+  final String name;
+  final TopMovie type;
 
-class _HomeListState extends State<HomeList> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                widget.title,
-                style: SettingApp.heding1.copyWith(fontSize: 20.sp),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: Text(
-                'See all',
-                style: SettingApp.heding2.copyWith(
-                  fontSize: 14.sp,
-                  color: SettingApp.colorText,
-                ),
-              ),
-            ),
-          ],
+        Expanded(
+          child: Text(
+            name,
+            style: SettingApp.heding1.copyWith(fontSize: 20.sp),
+          ),
         ),
-        16.verticalSpace,
-        SizedBox(
-          height: 200.h,
-          child: Consumer<HomeProvider>(
-            builder: (_, provider, __) {
-              List<MovieModel> listMovies = provider.listMovieNowPlaying;
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: listMovies.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return AspectRatio(
-                    aspectRatio: .8 / 1,
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 12),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            'https://image.tmdb.org/t/p/w500${listMovies[index].poster_path}',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              RouterName.seeAllPage,
+              arguments: {"name": name, "type": type},
+            );
+          },
+          child: Text(
+            'See all',
+            style: SettingApp.heding2.copyWith(
+              fontSize: 14.sp,
+              color: SettingApp.colorText,
+            ),
           ),
         ),
       ],

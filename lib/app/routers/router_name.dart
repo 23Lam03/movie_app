@@ -22,4 +22,5 @@ class RouterName {
   static const helpCenterPage = '/helpCenterPage';
   static const sortFilterPage = '/sortFilterPage';
   static const registerPage = '/registerPage';
+  static const bottomNavi = '/bottomNavi';
 }
