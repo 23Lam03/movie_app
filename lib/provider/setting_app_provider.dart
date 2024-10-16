@@ -24,6 +24,7 @@ class SettingAppProvider extends ChangeNotifier {
       'name': user.name,
       'userName': user.fullName,
       'phoneNumber': user.phone,
+      'image': user.image,
       'sex': user.sex,
       'createdAt': Timestamp.now(),
     });

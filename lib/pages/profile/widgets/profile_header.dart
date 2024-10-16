@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/provider/setting_app_provider.dart';
@@ -14,23 +15,25 @@ class ProfileHeader extends StatelessWidget {
       return Stack(
         children: [
           provider.userInfo!.image.isNotEmpty
-              ? Image.network(
-                  provider.userInfo!.image,
-                  fit: BoxFit.cover,
+              ? Container(
                   width: 120.w,
                   height: 120.h,
+                  decoration: const BoxDecoration(),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(1000.r),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: provider.userInfo!.image,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              CircularProgressIndicator(
+                                  value: downloadProgress.progress),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  ),
                 )
               : const SizedBox.shrink(),
-          Positioned(
-            top: 90,
-            left: 90,
-            child: Image.asset(
-              'assets/images/profile/EditSquare.png',
-              fit: BoxFit.cover,
-              width: 30.w,
-              height: 30.h,
-            ),
-          ),
         ],
       );
     });

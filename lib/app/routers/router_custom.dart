@@ -136,8 +136,11 @@ class RouterCustom {
           type: PageTransitionType.fade,
         );
       case RouterName.commentsPage:
+        int id = (settings.arguments as Map)['id'];
         return PageTransition(
-          child: const CommentsPage(),
+          child: CommentsPage(
+            idMovie: id,
+          ),
           type: PageTransitionType.fade,
         );
       default:

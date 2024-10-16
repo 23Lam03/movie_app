@@ -6,9 +6,16 @@ import 'package:movie_app/repository/movie_repo.dart';
 class DetailProvider extends ChangeNotifier {
   MovieDetailModel? movieDetail;
   bool isLoading = true;
+
+  void removeMovieDetail() {
+    print(isLoading);
+    isLoading = false;
+  }
+
 // lay id de ddo detail
   Future<void> getDetail(int id) async {
     movieDetail = await MovieRepo.getMovieDetail(id);
+    isLoading = false;
     notifyListeners();
   }
 
