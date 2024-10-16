@@ -29,7 +29,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController sexController = TextEditingController();
-
+  String gender = 'Male';
   bool isLoadingImage = false;
   bool isSubmitting = false;
 
@@ -103,6 +103,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           const SnackBar(content: Text("Please enter a valid phone number.")));
       return;
     }
+
+    sexController.text = gender;
 
     setState(() {
       isSubmitting = true;
@@ -265,9 +267,37 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   24.verticalSpace,
 
-                  InputNameCustom(
-                    controller: sexController,
-                    hintText: 'Gender',
+                  Container(
+                    width: getWidth(context),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color: const Color(0xff1F222A),
+                    ),
+                    child: DropdownButton<String>(
+                      value: gender,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      iconSize: 24.sp,
+                      underline: const SizedBox(),
+                      isExpanded: true,
+                      style: SettingApp.heding2.copyWith(
+                        fontSize: 14.sp,
+                        color: Colors.white,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          gender = newValue!;
+                        });
+                      },
+                      items: <String>['Male', 'Female']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                   ),
                   24.verticalSpace,
 

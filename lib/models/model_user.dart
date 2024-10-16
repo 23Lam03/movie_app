@@ -23,8 +23,8 @@ class ModelUser {
       'image': image,
       'email': email,
       'name': name,
-      'fullName': fullName,
-      'phone': phone,
+      'userName': fullName,
+      'phoneNumber': phone,
       'sex': sex,
     };
   }
@@ -35,8 +35,8 @@ class ModelUser {
           'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=',
       email: map['email'] ?? '',
       name: map['name'] ?? '',
-      fullName: map['fullName'] ?? '',
-      phone: map['phone'] ?? '',
+      fullName: map['userName'] ?? '',
+      phone: map['phoneNumber'] ?? '',
       sex: map['sex'] ?? '',
     );
   }

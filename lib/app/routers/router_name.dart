@@ -23,4 +23,5 @@ class RouterName {
   static const sortFilterPage = '/sortFilterPage';
   static const registerPage = '/registerPage';
   static const bottomNavi = '/bottomNavi';
+  static const commentsPage = '/commentsPage';
 }

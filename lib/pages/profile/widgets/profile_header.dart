@@ -20,12 +20,7 @@ class ProfileHeader extends StatelessWidget {
                   width: 120.w,
                   height: 120.h,
                 )
-              : Image.asset(
-                  'assets/images/profile/placeholder.png',
-                  fit: BoxFit.cover,
-                  width: 120.w,
-                  height: 120.h,
-                ),
+              : const SizedBox.shrink(),
           Positioned(
             top: 90,
             left: 90,
