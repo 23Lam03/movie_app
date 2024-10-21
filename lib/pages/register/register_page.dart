@@ -22,17 +22,17 @@ class _RegistrationPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController emailController =
-      TextEditingController(text: 'j@gmail.com');
+      TextEditingController(text: 'demo@gmail.com');
   TextEditingController passwordController =
-      TextEditingController(text: '238130');
+      TextEditingController(text: '123456');
   TextEditingController confirmPasswordController =
-      TextEditingController(text: '238130');
+      TextEditingController(text: '123456');
   TextEditingController nameController = TextEditingController(text: 'nbm');
   TextEditingController userNameController =
       TextEditingController(text: 'sdfsf');
   TextEditingController phoneNumberController =
       TextEditingController(text: '2341241');
-  String gender = 'Male';
+  String gender = '';
   @override
   void dispose() {
     emailController.dispose();
@@ -55,7 +55,6 @@ class _RegistrationPageState extends State<RegisterPage> {
         userNameController.text,
         phoneNumberController.text,
       );
-      print('asghdhj$isRegistered');
       if (isRegistered) {
         Navigator.pop(context, {
           "email": emailController.text,

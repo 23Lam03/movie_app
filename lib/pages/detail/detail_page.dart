@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/helper/format_number.dart';
@@ -8,6 +9,7 @@ import 'package:movie_app/models/video_model.dart';
 import 'package:movie_app/provider/comment_provider.dart';
 import 'package:movie_app/provider/detail_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
+import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/loading/detail_loading.dart';
 import 'package:provider/provider.dart';
@@ -487,55 +489,74 @@ class _DetailPageState extends State<DetailPage>
                                           itemCount: 4,
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            return Column(
-                                              children: [
-                                                24.horizontalSpace,
-                                                Row(
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/detail/avatadetail.png',
-                                                      width: 48.w,
-                                                      height: 48.h,
-                                                    ),
-                                                    16.horizontalSpace,
-                                                    Expanded(
-                                                      child: Text(
-                                                        'Kristin Watson',
-                                                        style: SettingApp
-                                                            .heding1
-                                                            .copyWith(
-                                                                fontSize:
-                                                                    16.sp),
+                                            return Consumer<SettingAppProvider>(
+                                                builder: (_, provider, __) {
+                                              return Column(
+                                                children: [
+                                                  24.horizontalSpace,
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 48.w,
+                                                        height: 48.h,
+                                                        decoration:
+                                                            const BoxDecoration(),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      1000.r),
+                                                          child:
+                                                              CachedNetworkImage(
+                                                            fit: BoxFit.cover,
+                                                            imageUrl: provider
+                                                                .userInfo!
+                                                                .image,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Image.asset(
-                                                      'assets/images/detail/MoreCircle.png',
-                                                      color: const Color(
-                                                          0xffFFFFFF),
-                                                      width: 18.w,
-                                                      height: 18.h,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ],
-                                                ),
-                                                12.verticalSpace,
-                                                Text(
-                                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-                                                  style: SettingApp.heding4,
-                                                ),
-                                                12.verticalSpace,
-                                                Row(
-                                                  children: [
-                                                    const Icon(Icons.favorite),
-                                                    8.horizontalSpace,
-                                                    const Text('938'),
-                                                    24.horizontalSpace,
-                                                    const Text('3 days ago'),
-                                                  ],
-                                                ),
-                                                29.verticalSpace,
-                                              ],
-                                            );
+                                                      16.horizontalSpace,
+                                                      Expanded(
+                                                        child: Text(
+                                                          provider.userInfo!
+                                                              .fullName,
+                                                          style: SettingApp
+                                                              .heding1
+                                                              .copyWith(
+                                                                  fontSize:
+                                                                      16.sp),
+                                                        ),
+                                                      ),
+                                                      Image.asset(
+                                                        'assets/images/detail/MoreCircle.png',
+                                                        color: const Color(
+                                                            0xffFFFFFF),
+                                                        width: 18.w,
+                                                        height: 18.h,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  12.verticalSpace,
+                                                  Text(
+                                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
+                                                    style: SettingApp.heding4,
+                                                  ),
+                                                  12.verticalSpace,
+                                                  Row(
+                                                    children: [
+                                                      const Icon(
+                                                          Icons.favorite),
+                                                      8.horizontalSpace,
+                                                      const Text('938'),
+                                                      24.horizontalSpace,
+                                                      const Text('3 days ago'),
+                                                    ],
+                                                  ),
+                                                  29.verticalSpace,
+                                                ],
+                                              );
+                                            });
                                           },
                                         ),
                                       ),

@@ -142,7 +142,7 @@ class _CommentsPageState extends State<CommentsPage> {
                                         8.horizontalSpace,
                                         const Text('938'),
                                         24.horizontalSpace,
-                                        // Text(data[index]['time'].toString()),
+                                        Text(data[index]['time'].toString()),
                                       ],
                                     ),
                                     29.verticalSpace,
