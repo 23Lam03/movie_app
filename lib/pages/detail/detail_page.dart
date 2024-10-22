@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/helper/format_number.dart';
@@ -9,11 +10,11 @@ import 'package:movie_app/models/video_model.dart';
 import 'package:movie_app/provider/comment_provider.dart';
 import 'package:movie_app/provider/detail_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
-import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/loading/detail_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DetailPage extends StatefulWidget {
   final int id;
@@ -398,59 +399,55 @@ class _DetailPageState extends State<DetailPage>
                                     );
                                   },
                                 ),
-                                Expanded(
-                                  child: Consumer<HomeProvider>(
-                                    builder: (__, provider, _) {
-                                      List<MovieModel> data =
-                                          provider.listMovieNowPlaying;
-                                      return GridView.builder(
-                                        physics:
-                                            const AlwaysScrollableScrollPhysics(),
-                                        scrollDirection: Axis.vertical,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          crossAxisSpacing: 8,
-                                          mainAxisSpacing: 24,
-                                          childAspectRatio: 168 / 248,
-                                        ),
-                                        itemCount: data.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return InkWell(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                RouterName.movieDetail,
-                                                arguments: {
-                                                  "id": data[index].id
-                                                },
-                                              );
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    'https://image.tmdb.org/t/p/w500${data[index].poster_path}',
-                                                  ),
-                                                  fit: BoxFit.cover,
+                                Consumer<HomeProvider>(
+                                  builder: (__, provider, _) {
+                                    List<MovieModel> data =
+                                        provider.listMovieNowPlaying;
+                                    return GridView.builder(
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      scrollDirection: Axis.vertical,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 24,
+                                        childAspectRatio: 168 / 248,
+                                      ),
+                                      itemCount: data.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              RouterName.movieDetail,
+                                              arguments: {"id": data[index].id},
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                  'https://image.tmdb.org/t/p/w500${data[index].poster_path}',
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black
-                                                        .withOpacity(0.2),
-                                                    blurRadius: 8,
-                                                  ),
-                                                ],
+                                                fit: BoxFit.cover,
                                               ),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.2),
+                                                  blurRadius: 8,
+                                                ),
+                                              ],
                                             ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
                                 ),
                                 Padding(
                                   padding:
@@ -469,9 +466,11 @@ class _DetailPageState extends State<DetailPage>
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.pushNamed(context,
-                                                  RouterName.commentsPage,
-                                                  arguments: {'id': widget.id});
+                                              Navigator.pushNamed(
+                                                context,
+                                                RouterName.commentsPage,
+                                                arguments: {'id': widget.id},
+                                              );
                                             },
                                             child: Text(
                                               'See all',
@@ -484,79 +483,152 @@ class _DetailPageState extends State<DetailPage>
                                           ),
                                         ],
                                       ),
+                                      16.horizontalSpace,
+
+                                      // Sử dụng Expanded để ngăn danh sách mở rộng ngoài màn hình
                                       Expanded(
-                                        child: ListView.builder(
-                                          itemCount: 4,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Consumer<SettingAppProvider>(
-                                                builder: (_, provider, __) {
-                                              return Column(
-                                                children: [
-                                                  24.horizontalSpace,
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 48.w,
-                                                        height: 48.h,
-                                                        decoration:
-                                                            const BoxDecoration(),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      1000.r),
-                                                          child:
-                                                              CachedNetworkImage(
-                                                            fit: BoxFit.cover,
-                                                            imageUrl: provider
-                                                                .userInfo!
-                                                                .image,
-                                                          ),
+                                        child: StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection('comment')
+                                              .doc(widget.id.toString())
+                                              .collection('userComment')
+                                              .orderBy('time', descending: true)
+                                              .limit(
+                                                  4) // Giới hạn hiển thị 4 bình luận
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            if (!snapshot.hasData) {
+                                              return const Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            }
+
+                                            var comments = snapshot.data!.docs;
+
+                                            return ListView.builder(
+                                              itemCount: comments.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                var commentData =
+                                                    comments[index].data()
+                                                        as Map<String, dynamic>;
+
+                                                return FutureBuilder<
+                                                    DocumentSnapshot>(
+                                                  future: FirebaseFirestore
+                                                      .instance
+                                                      .collection('users')
+                                                      .doc(
+                                                          commentData['userId'])
+                                                      .get(),
+                                                  builder:
+                                                      (context, userSnapshot) {
+                                                    if (userSnapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const SizedBox();
+                                                    }
+                                                    if (!userSnapshot.hasData ||
+                                                        userSnapshot.hasError) {
+                                                      return const Text(
+                                                          'User not found');
+                                                    }
+
+                                                    var userData = userSnapshot
+                                                            .data!
+                                                            .data()
+                                                        as Map<String, dynamic>;
+                                                    String fullName = userData
+                                                            .containsKey(
+                                                                'fullName')
+                                                        ? userData['fullName']
+                                                        : 'Anonymous';
+
+                                                    return Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              width: 48.w,
+                                                              height: 48.h,
+                                                              decoration:
+                                                                  const BoxDecoration(),
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            1000.r),
+                                                                child:
+                                                                    CachedNetworkImage(
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  imageUrl:
+                                                                      userData[
+                                                                          'image'],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            16.horizontalSpace,
+                                                            Expanded(
+                                                              child: Text(
+                                                                fullName,
+                                                                style: SettingApp
+                                                                    .heding1
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            16.sp),
+                                                              ),
+                                                            ),
+                                                            Image.asset(
+                                                              'assets/images/detail/MoreCircle.png',
+                                                              color: const Color(
+                                                                  0xffFFFFFF),
+                                                              width: 18.w,
+                                                              height: 18.h,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ),
-                                                      16.horizontalSpace,
-                                                      Expanded(
-                                                        child: Text(
-                                                          provider.userInfo!
-                                                              .fullName,
+                                                        12.verticalSpace,
+                                                        Text(
+                                                          commentData[
+                                                              'message'],
                                                           style: SettingApp
-                                                              .heding1
-                                                              .copyWith(
-                                                                  fontSize:
-                                                                      16.sp),
+                                                              .heding4,
                                                         ),
-                                                      ),
-                                                      Image.asset(
-                                                        'assets/images/detail/MoreCircle.png',
-                                                        color: const Color(
-                                                            0xffFFFFFF),
-                                                        width: 18.w,
-                                                        height: 18.h,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  12.verticalSpace,
-                                                  Text(
-                                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-                                                    style: SettingApp.heding4,
-                                                  ),
-                                                  12.verticalSpace,
-                                                  Row(
-                                                    children: [
-                                                      const Icon(
-                                                          Icons.favorite),
-                                                      8.horizontalSpace,
-                                                      const Text('938'),
-                                                      24.horizontalSpace,
-                                                      const Text('3 days ago'),
-                                                    ],
-                                                  ),
-                                                  29.verticalSpace,
-                                                ],
-                                              );
-                                            });
+                                                        12.verticalSpace,
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons.favorite),
+                                                            8.horizontalSpace,
+                                                            const Text(
+                                                                '938'), // Lượt thích tạm thời
+                                                            24.horizontalSpace,
+                                                            Text(
+                                                              timeago.format(
+                                                                  (commentData[
+                                                                              'time']
+                                                                          as Timestamp)
+                                                                      .toDate()),
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      12.sp),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        29.verticalSpace,
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
                                           },
                                         ),
                                       ),

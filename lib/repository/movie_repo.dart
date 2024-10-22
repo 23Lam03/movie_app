@@ -79,10 +79,10 @@ class MovieRepo {
     return data;
   }
 
-  static Future<MovieGenre?> getMovieGenre(int id) async {
+  static Future<List<MovieGenre>> getMovieGenres() async {
     const token =
         'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTdiYzE4N2E0NmU1YWNmZWFhMjBlMDJkMmRiZDEwMSIsIm5iZiI6MTcyNjYzMTMwMS45NjA5NTIsInN1YiI6IjY2ZTdiNzJhMzc2OGE3M2Y4ZDkxYWY0MiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bN9xeOHXXDSXDR_SZD4UpDkHwxFyaU_zytd8p4pwAzc';
-    const url = 'https://api.themoviedb.org/3/genre/movie/list?language=en';
+    const url = 'https://api.themoviedb.org/3/genre/tv/list?language=en';
 
     final response = await http.get(Uri.parse(url), headers: {
       'Content-Type': 'application/json',
@@ -92,9 +92,11 @@ class MovieRepo {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> body = jsonDecode(response.body);
-      MovieGenre genre = MovieGenre.fromMap(body);
-      return genre;
+      List<dynamic> genresJson = body['genres'];
+      List<MovieGenre> genres =
+          genresJson.map((json) => MovieGenre.fromMap(json)).toList();
+      return genres;
     }
-    return null;
+    return [];
   }
 }

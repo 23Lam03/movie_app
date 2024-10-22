@@ -7,6 +7,7 @@ import 'package:movie_app/provider/comment_provider.dart';
 import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/widgets/input_name_custom.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CommentsPage extends StatefulWidget {
   const CommentsPage({super.key, required this.idMovie});
@@ -27,13 +28,14 @@ class _CommentsPageState extends State<CommentsPage> {
         .collection('comment')
         .doc(widget.idMovie.toString())
         .collection('userComment')
+        .orderBy('time', descending: true)
         .snapshots();
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    commentController.dispose();
     super.dispose();
   }
 
@@ -69,7 +71,7 @@ class _CommentsPageState extends State<CommentsPage> {
                                 icon: const Icon(Icons.arrow_back),
                               ),
                               Text(
-                                '24.6K Comments',
+                                '${data.length} Comments',
                                 style: SettingApp.heding1
                                     .copyWith(fontSize: 24.sp),
                               ),
@@ -88,51 +90,60 @@ class _CommentsPageState extends State<CommentsPage> {
                             child: ListView.builder(
                               itemCount: data.length,
                               itemBuilder: (BuildContext context, int index) {
+                                // Lấy thông tin người dùng cho từng comment
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     FutureBuilder(
-                                        future: FirebaseFirestore.instance
-                                            .collection('users')
-                                            .get(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const SizedBox();
-                                          }
-                                          Map<String, dynamic> data =
-                                              snapshot.data!.docs[0].data();
-                                          ModelUser user =
-                                              ModelUser.fromMap(data);
-                                          return Row(
-                                            children: [
-                                              Image.network(
-                                                user.image,
-                                                width: 48.w,
-                                                height: 48.h,
+                                      future: FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(data[index]['userId'])
+                                          .get(),
+                                      builder: (context, userSnapshot) {
+                                        if (userSnapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const SizedBox();
+                                        }
+                                        if (userSnapshot.hasError ||
+                                            !userSnapshot.hasData) {
+                                          return const Text("User not found");
+                                        }
+
+                                        Map<String, dynamic> userData =
+                                            userSnapshot.data!.data()!;
+                                        ModelUser user =
+                                            ModelUser.fromMap(userData);
+
+                                        return Row(
+                                          children: [
+                                            Image.network(
+                                              user.image,
+                                              width: 48.w,
+                                              height: 48.h,
+                                            ),
+                                            16.horizontalSpace,
+                                            Expanded(
+                                              child: Text(
+                                                user.fullName,
+                                                style: SettingApp.heding1
+                                                    .copyWith(fontSize: 16.sp),
                                               ),
-                                              16.horizontalSpace,
-                                              Expanded(
-                                                child: Text(
-                                                  user.fullName,
-                                                  style: SettingApp.heding1
-                                                      .copyWith(
-                                                          fontSize: 16.sp),
-                                                ),
-                                              ),
-                                              Image.asset(
-                                                'assets/images/detail/MoreCircle.png',
-                                                color: const Color(0xffFFFFFF),
-                                                width: 24.w,
-                                                height: 24.h,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ],
-                                          );
-                                        }),
+                                            ),
+                                            Image.asset(
+                                              'assets/images/detail/MoreCircle.png',
+                                              color: const Color(0xffFFFFFF),
+                                              width: 24.w,
+                                              height: 24.h,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
                                     12.verticalSpace,
                                     Text(
-                                      data[index]['message'],
+                                      data[index]['message'] ??
+                                          'No message available',
                                       style: SettingApp.heding4,
                                     ),
                                     12.verticalSpace,
@@ -142,7 +153,13 @@ class _CommentsPageState extends State<CommentsPage> {
                                         8.horizontalSpace,
                                         const Text('938'),
                                         24.horizontalSpace,
-                                        Text(data[index]['time'].toString()),
+                                        // Hiển thị thời gian bằng timeago
+                                        Text(
+                                          timeago.format(
+                                              (data[index]['time'] as Timestamp)
+                                                  .toDate()),
+                                          style: TextStyle(fontSize: 12.sp),
+                                        ),
                                       ],
                                     ),
                                     29.verticalSpace,
@@ -193,8 +210,7 @@ class _CommentsPageState extends State<CommentsPage> {
                                           widget.idMovie,
                                         );
                                     commentController.clear();
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
+                                    FocusScope.of(context).unfocus();
                                   },
                                   child: const Icon(
                                     Icons.send,

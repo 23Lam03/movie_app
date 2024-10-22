@@ -22,6 +22,13 @@ class ExplorePage extends StatefulWidget {
 
 class _ExplorePageState extends State<ExplorePage> {
   @override
+  void initState() {
+    super.initState();
+    // Fetch genres when the page loads
+    Provider.of<GenreProvider>(context, listen: false).fetchGenres();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -142,52 +149,51 @@ class _ExplorePageState extends State<ExplorePage> {
                   ),
                   24.verticalSpace,
                   Expanded(
-                    child: Consumer<HomeProvider>(
-                      builder: (context, provider, _) {
-                        List<MovieModel> data = provider.listMovieNowPlaying;
-                        if (data.isEmpty) {
-                          return const ExploreLoading();
-                        }
-                        return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8,
-                            childAspectRatio: 168 / 248,
-                          ),
-                          itemCount: data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RouterName.movieDetail,
-                                  arguments: {"id": data[index].id},
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                      'https://image.tmdb.org/t/p/w500${data[index].poster_path}',
-                                    ),
-                                    fit: BoxFit.cover,
+                    child:
+                        Consumer<HomeProvider>(builder: (context, provider, _) {
+                      List<MovieModel> data = provider.listMovieNowPlaying;
+                      if (data.isEmpty) {
+                        return const ExploreLoading();
+                      }
+                      return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                          childAspectRatio: 168 / 248,
+                        ),
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                RouterName.movieDetail,
+                                arguments: {"id": data[index].id},
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    'https://image.tmdb.org/t/p/w500${data[index].poster_path}',
                                   ),
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 8,
-                                    ),
-                                  ],
+                                  fit: BoxFit.cover,
                                 ),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 8,
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                        );
-                      },
-                    ),
+                            ),
+                          );
+                        },
+                      );
+                    }),
                   ),
                 ],
               ),
@@ -213,11 +219,16 @@ Widget _category(String title) {
       SizedBox(
         height: 60.h,
         child: Consumer<GenreProvider>(builder: (_, provider, __) {
-          List<MovieGenre> genre = provider.listGenre;
+          List<MovieGenre> genres = provider.listGenre;
+
+          if (provider.isLoading) {
+            // return const Center(child: CircularProgressIndicator());
+          }
+
           return ListView.builder(
             padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 20.h),
             scrollDirection: Axis.horizontal,
-            itemCount: 5,
+            itemCount: genres.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding: EdgeInsets.only(right: 8.w),
@@ -229,9 +240,11 @@ Widget _category(String title) {
                     borderRadius: BorderRadius.circular(100.r),
                   ),
                   child: Text(
-                    'dssdfsd',
-                    style: SettingApp.heding2
-                        .copyWith(fontSize: 16.sp, color: SettingApp.colorText),
+                    genres[index].name,
+                    style: SettingApp.heding2.copyWith(
+                      fontSize: 16.sp,
+                      color: SettingApp.colorText,
+                    ),
                   ),
                 ),
               );
