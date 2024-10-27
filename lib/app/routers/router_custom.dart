@@ -14,6 +14,7 @@ import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/pages/language/language_page.dart';
 import 'package:movie_app/pages/login/login_page.dart';
 import 'package:movie_app/pages/notification/notification_page.dart';
+import 'package:movie_app/pages/notification_details/notification_details_page.dart';
 import 'package:movie_app/pages/notification_profile/notification_profile_page.dart';
 import 'package:movie_app/pages/privacy_policy/privacy_policy_page.dart';
 import 'package:movie_app/pages/profile/profile_page.dart';
@@ -143,8 +144,24 @@ class RouterCustom {
           ),
           type: PageTransitionType.fade,
         );
+      case RouterName.notificationDetails:
+        // Check if settings.arguments is a String or a Map
+        if (settings.arguments is String) {
+          String notificationId = settings.arguments as String;
+          return PageTransition(
+            child: NotificationDetailsPage(notificationId: notificationId),
+            type: PageTransitionType.fade,
+          );
+        } else if (settings.arguments is Map) {
+          String notificationId = (settings.arguments as Map)['notificationId'];
+          return PageTransition(
+            child: NotificationDetailsPage(notificationId: notificationId),
+            type: PageTransitionType.fade,
+          );
+        }
       default:
         return null;
     }
+    return null;
   }
 }

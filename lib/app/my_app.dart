@@ -8,6 +8,7 @@ import 'package:movie_app/provider/auth_registet_provider.dart';
 import 'package:movie_app/provider/detail_provider.dart';
 import 'package:movie_app/provider/genre_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
+import 'package:movie_app/provider/my_list_provider.dart';
 import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
             ),
             ChangeNotifierProvider(
               create: (context) => SettingAppProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => MyListProvider(),
             ),
           ],
           child: GlobalLoaderOverlay(

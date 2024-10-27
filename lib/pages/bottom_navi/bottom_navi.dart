@@ -1,9 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/pages/download/download_page.dart';
 import 'package:movie_app/pages/explore/explore_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
 import 'package:movie_app/pages/my_list/my_list_page.dart';
 import 'package:movie_app/pages/profile/profile_page.dart';
+import 'package:movie_app/provider/home_provider.dart';
+import 'package:movie_app/provider/setting_app_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class BottomNavi extends StatefulWidget {
   const BottomNavi({super.key});
@@ -25,6 +32,31 @@ class _BottomNaviState extends State<BottomNavi> {
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      context.read<HomeProvider>().updateNotificationCount();
+
+      DocumentReference notification = FirebaseFirestore.instance
+          .collection('notification')
+          .doc(context.read<SettingAppProvider>().uId);
+
+      notification.collection('notificationData').add({
+        'time': DateTime.now(),
+        'body': message.notification?.body ?? '',
+        'title': message.notification?.title ?? '',
+      }).then((value) {
+        showTopSnackBar(
+          Overlay.of(context),
+          CustomSnackBar.info(message: message.notification?.body ?? ''),
+        );
+      }).catchError((error) => print("Failed to add user: $error"));
     });
   }
 

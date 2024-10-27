@@ -10,6 +10,7 @@ import 'package:movie_app/models/video_model.dart';
 import 'package:movie_app/provider/comment_provider.dart';
 import 'package:movie_app/provider/detail_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
+import 'package:movie_app/provider/my_list_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/loading/detail_loading.dart';
 import 'package:provider/provider.dart';
@@ -111,10 +112,23 @@ class _DetailPageState extends State<DetailPage>
                                             .copyWith(fontSize: 24.sp),
                                       ),
                                     ),
-                                    Image.asset(
-                                      'assets/images/detail/Bookmark.png',
-                                      width: 20.w,
-                                      height: 20.h,
+                                    InkWell(
+                                      onTap: () {
+                                        String userId = "user_id";
+                                        int movieId = movieDetail.id;
+                                        String posterPath =
+                                            provider.movieDetail!.poster_path;
+
+                                        Provider.of<MyListProvider>(context,
+                                                listen: false)
+                                            .addToFavourites(
+                                                userId, movieId, posterPath);
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/detail/Bookmark.png',
+                                        width: 20.w,
+                                        height: 20.h,
+                                      ),
                                     ),
                                     20.horizontalSpace,
                                     Image.asset(
@@ -494,7 +508,7 @@ class _DetailPageState extends State<DetailPage>
                                               .collection('userComment')
                                               .orderBy('time', descending: true)
                                               .limit(
-                                                  4) // Giới hạn hiển thị 4 bình luận
+                                                  4) // Giới hạn hiển thị  bình luận
                                               .snapshots(),
                                           builder: (context, snapshot) {
                                             if (!snapshot.hasData) {
@@ -542,8 +556,8 @@ class _DetailPageState extends State<DetailPage>
                                                         as Map<String, dynamic>;
                                                     String fullName = userData
                                                             .containsKey(
-                                                                'fullName')
-                                                        ? userData['fullName']
+                                                                'userName')
+                                                        ? userData['userName']
                                                         : 'Anonymous';
 
                                                     return Column(

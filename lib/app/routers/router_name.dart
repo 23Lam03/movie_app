@@ -24,4 +24,5 @@ class RouterName {
   static const registerPage = '/registerPage';
   static const bottomNavi = '/bottomNavi';
   static const commentsPage = '/commentsPage';
+  static const notificationDetails = '/notificationDetails';
 }

@@ -8,6 +8,8 @@ class HomeProvider extends ChangeNotifier {
   List<MovieModel> listMovieReleases = [];
   List<MovieModel> listMovieTopRated = [];
   List<MovieModel> listMovieUpcoming = [];
+  int notificationCount = 0;
+
   bool isLoading = true;
   Future<void> initHome() async {
     await getListMovieNowPlaying();
@@ -42,6 +44,11 @@ class HomeProvider extends ChangeNotifier {
     List<MovieModel> dataUpcoming =
         await MovieRepo.getListMovieTop(TopMovie.UPCOMING);
     listMovieUpcoming = dataUpcoming;
+    notifyListeners();
+  }
+
+  void updateNotificationCount() async {
+    notificationCount++;
     notifyListeners();
   }
 }

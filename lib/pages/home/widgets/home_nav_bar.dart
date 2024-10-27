@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/pages/search/search_page.dart';
+import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
+import 'package:provider/provider.dart';
 
 class HomeNavBar extends StatelessWidget {
   const HomeNavBar({
@@ -51,10 +54,32 @@ class HomeNavBar extends StatelessWidget {
                           RouterName.notificationPage,
                         );
                       },
-                      child: Image.asset(
-                        'assets/images/login/Notification.png',
-                        fit: BoxFit.cover,
-                      ),
+                      child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('notification')
+                              .doc(context.read<SettingAppProvider>().uId)
+                              .collection('notificationData')
+                              .orderBy('time', descending: true)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return const Text('Something went wrong');
+                            }
+
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Text("Loading");
+                            }
+                            List data = snapshot.data!.docs;
+
+                            return Badge.count(
+                              count: data.length,
+                              child: Image.asset(
+                                'assets/images/login/Notification.png',
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          }),
                     ),
                   ],
                 ),

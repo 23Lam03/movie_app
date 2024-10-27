@@ -53,22 +53,24 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<void> _loginWithGoogle() async {
+    context.loaderOverlay.show();
+    bool isLogin = await context.read<AuthProvider>().signInWithGoogle();
+    context.loaderOverlay.hide();
+    if (isLogin) {
+      Navigator.pushReplacementNamed(context, RouterName.bottomNavi);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Google Sign-In failed. Please try again.')),
+      );
+    }
+  }
+
   bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
-    Color getColor(Set<WidgetState> states) {
-      const Set<WidgetState> interactiveStates = <WidgetState>{
-        WidgetState.pressed,
-        WidgetState.hovered,
-        WidgetState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return Colors.red;
-    }
-
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -94,7 +96,6 @@ class _LoginPageState extends State<LoginPage> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // email
                     InputCustom(
                       controller: emailController,
                       prefixIcon: const Icon(Icons.email),
@@ -110,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     20.verticalSpace,
-                    // password
                     InputCustom(
                       controller: passwordController,
                       prefixIcon: const Icon(Icons.lock),
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Checkbox(
                     checkColor: Colors.white,
-                    fillColor: WidgetStateProperty.resolveWith(getColor),
+                    activeColor: Colors.blue,
                     value: isChecked,
                     onChanged: (bool? value) {
                       setState(() {
@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                   20.horizontalSpace,
                   Expanded(
                     child: ButtonMainCustom(
-                      onTap: () {},
+                      onTap: _loginWithGoogle,
                       backgroundColor: const Color(0xff1F222A),
                       borderColor: Colors.transparent,
                       borderRadius: 16,
@@ -221,24 +221,21 @@ class _LoginPageState extends State<LoginPage> {
                     'Already have an account?',
                     style: SettingApp.heding4,
                   ),
-                  8.horizontalSpace,
-                  InkWell(
+                  4.horizontalSpace,
+                  GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, RouterName.registerPage)
-                          .then(
-                        (value) {
-                          Map dta = value as Map;
-                          emailController.text = dta['email'];
-                          passwordController.text = dta['password'];
-                        },
-                      );
+                          .then((value) {
+                        if (value != null && value is Map) {
+                          emailController.text = value['email'] ?? '';
+                          passwordController.text = value['password'] ?? '';
+                        }
+                      });
                     },
                     child: Text(
-                      'Sign up',
-                      style: SettingApp.heding1.copyWith(
-                        fontSize: 14,
-                        color: SettingApp.colorText,
-                      ),
+                      'Register',
+                      style:
+                          SettingApp.heding4.copyWith(color: Colors.blueAccent),
                     ),
                   ),
                 ],

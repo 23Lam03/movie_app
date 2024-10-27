@@ -1,47 +1,74 @@
-// import 'package:flutter/material.dart';
-
-// class AuthProvider extends ChangeNotifier {
-//   Future<bool> login(String email, String password) async {
-//     /// xu li
-//     await Future.delayed(const Duration(seconds: 2));
-
-//     //xong
-//     // 1. kiem dung khong
-//     // 2. sai => thong bao
-//     // 3. dung => 1.tra ve true , 2.chuyen trang
-//     return false;
-//   }
-// }
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movie_app/app/const/accout.dart';
 import 'package:movie_app/app/helper/share_pre.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  // Email/Password login
   Future<bool> login(String email, String password) async {
     try {
-      //Đăng nhập xác thực Firebase
-      UserCredential user = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      // user.user.uid;
-      if (user.user!.uid.isNotEmpty) {
-        SharePre.setString(Accout.keyUserId, user.user!.uid);
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null && userCredential.user!.uid.isNotEmpty) {
+        await SharePre.setString(Accout.keyUserId, userCredential.user!.uid);
+        return true; // Successful login
       }
-      return true; // Successful login
+      return false;
     } on FirebaseAuthException catch (e) {
-      // Xử lý lỗi đăng nhập
+      // Handle specific errors
       if (e.code == 'user-not-found') {
-      } else if (e.code == 'wrong-password') {}
-      return false; // Login failed
+        print("No user found with this email.");
+      } else if (e.code == 'wrong-password') {
+        print("Incorrect password.");
+      }
+      return false;
     } catch (e) {
+      print("Error during login: $e");
       return false;
     }
   }
 
+  // Google Sign-In login
+  Future<bool> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return false; // User canceled login
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      if (userCredential.user != null && userCredential.user!.uid.isNotEmpty) {
+        await SharePre.setString(Accout.keyUserId, userCredential.user!.uid);
+        return true;
+      }
+      return false;
+    } on FirebaseAuthException catch (e) {
+      print("FirebaseAuthException during Google Sign-In: ${e.message}");
+      return false;
+    } catch (e) {
+      print("Error during Google Sign-In: $e");
+      return false;
+    }
+  }
+
+  // Logout function to sign out from both Firebase and Google
   Future<void> logout() async {
-    SharePre.remove(Accout.keyUserId);
+    await _auth.signOut(); // Firebase sign-out
+    await _googleSignIn.signOut(); // Google sign-out
+    await SharePre.remove(Accout.keyUserId); // Clear saved user ID
+    notifyListeners(); // Notify listeners if the user state is being used in the app
   }
 }
