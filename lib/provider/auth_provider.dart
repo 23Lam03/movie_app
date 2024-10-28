@@ -16,21 +16,12 @@ class AuthProvider extends ChangeNotifier {
         password: password,
       );
 
-      if (userCredential.user != null && userCredential.user!.uid.isNotEmpty) {
-        await SharePre.setString(Accout.keyUserId, userCredential.user!.uid);
-        return true; // Successful login
-      }
-      return false;
+      return await _handleAuthSuccess(userCredential);
     } on FirebaseAuthException catch (e) {
-      // Handle specific errors
-      if (e.code == 'user-not-found') {
-        print("No user found with this email.");
-      } else if (e.code == 'wrong-password') {
-        print("Incorrect password.");
-      }
+      _handleAuthError(e);
       return false;
     } catch (e) {
-      print("Error during login: $e");
+      print("Unexpected error during login: $e");
       return false;
     }
   }
@@ -50,25 +41,45 @@ class AuthProvider extends ChangeNotifier {
 
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      if (userCredential.user != null && userCredential.user!.uid.isNotEmpty) {
-        await SharePre.setString(Accout.keyUserId, userCredential.user!.uid);
-        return true;
-      }
-      return false;
+      return await _handleAuthSuccess(userCredential);
     } on FirebaseAuthException catch (e) {
-      print("FirebaseAuthException during Google Sign-In: ${e.message}");
+      _handleAuthError(e);
       return false;
     } catch (e) {
-      print("Error during Google Sign-In: $e");
+      print("Unexpected error during Google Sign-In: $e");
       return false;
     }
   }
 
   // Logout function to sign out from both Firebase and Google
   Future<void> logout() async {
-    await _auth.signOut(); // Firebase sign-out
-    await _googleSignIn.signOut(); // Google sign-out
-    await SharePre.remove(Accout.keyUserId); // Clear saved user ID
-    notifyListeners(); // Notify listeners if the user state is being used in the app
+    await _auth.signOut();
+    await _googleSignIn.signOut();
+    await SharePre.remove(Accout.keyUserId);
+    notifyListeners();
+  }
+
+  // Handle successful login and store the user ID
+  Future<bool> _handleAuthSuccess(UserCredential userCredential) async {
+    if (userCredential.user != null && userCredential.user!.uid.isNotEmpty) {
+      await SharePre.setString(Accout.keyUserId, userCredential.user!.uid);
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  // Handle authentication errors
+  void _handleAuthError(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'user-not-found':
+        print("No user found with this email.");
+        break;
+      case 'wrong-password':
+        print("Incorrect password.");
+        break;
+      default:
+        print("Authentication error: ${e.message}");
+    }
   }
 }

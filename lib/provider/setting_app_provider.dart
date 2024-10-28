@@ -41,4 +41,14 @@ class SettingAppProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
+  void deleteUser() async {
+    if (uId.isEmpty) return;
+    {
+      await FirebaseFirestore.instance.collection('users').doc(uId).delete();
+      uId = '';
+      userInfo = null;
+      notifyListeners();
+    }
+  }
 }
