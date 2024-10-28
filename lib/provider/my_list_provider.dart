@@ -2,52 +2,75 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MyListProvider extends ChangeNotifier {
-  final List<Map<String, dynamic>> _favoriteMovies = [];
-
-  List<Map<String, dynamic>> get favoriteMovies => _favoriteMovies;
+  final List<Map<String, dynamic>> favoriteMovies = [];
+  final List<int> checkListFa = [];
 
   Future<void> addToFavourites(
-      String userId, int movieId, String posterPath) async {
-    DocumentReference favouriteRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('favourites')
-        .doc(movieId.toString());
-
-    try {
-      await favouriteRef.set({
-        'time': DateTime.now(),
-        'posterPath': posterPath,
-      });
-      print("Movie Added to Favourites");
+      String userId, int movieId, String backdropPath) async {
+    if (checkListFa.contains(movieId)) {
+      checkListFa.remove(movieId);
+      await FirebaseFirestore.instance
+          .collection('favourites')
+          .doc(userId)
+          .collection('userfavourite')
+          .doc(movieId.toString())
+          .delete();
       notifyListeners();
-    } catch (error) {
-      print("Failed to add movie: $error");
+      return;
     }
+    print('ko id');
+    Map<String, dynamic> data = {
+      "movieId": movieId,
+      "backdropPath": backdropPath,
+      'time': DateTime.now(),
+    };
+
+    final favouriteRef = FirebaseFirestore.instance
+        .collection('favourites')
+        .doc(userId)
+        .collection('userfavourite')
+        .doc(movieId.toString())
+        .set(data);
+
+    checkListFa.add(movieId);
+    print("Movie Added to Favourites");
+    notifyListeners();
   }
 
   Future<void> fetchFavoriteMovies(String userId) async {
     List<Map<String, dynamic>> favoriteMoviesList = [];
 
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('favourites')
-          .get();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('favourites')
+        .doc(userId)
+        .collection('userfavourite')
+        .get();
 
-      for (var doc in snapshot.docs) {
-        favoriteMoviesList.add({
-          'idMovie': doc.id,
-          'posterPath': doc['posterPath'],
-        });
-      }
+    checkListFa.clear();
 
-      _favoriteMovies.clear();
-      _favoriteMovies.addAll(favoriteMoviesList);
-      notifyListeners();
-    } catch (error) {
-      print("Failed to fetch favorite movies: $error");
+    for (var doc in snapshot.docs) {
+      favoriteMoviesList.add({
+        'idMovie': doc['movieId'],
+        'backdrop_path': doc['backdropPath'],
+      });
+      checkListFa.add(doc['movieId']);
     }
+
+    favoriteMovies.clear();
+    favoriteMovies.addAll(favoriteMoviesList);
+    notifyListeners();
+  }
+
+  Future<void> checkFavourite(String userId, int movideId) async {
+    // QuerySnapshot snapshot = await FirebaseFirestore.instance
+    //     .collection('favourites')
+    //     .doc(userId)
+    //     .collection('userfavourite')
+    //     .where('movieId', isEqualTo: movideId)
+    //     .get();
+
+    // var data = snapshot.docs.length;
+    // return data == 0 ? false : true;
+    fetchFavoriteMovies(userId);
   }
 }

@@ -11,6 +11,7 @@ import 'package:movie_app/provider/comment_provider.dart';
 import 'package:movie_app/provider/detail_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
 import 'package:movie_app/provider/my_list_provider.dart';
+import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/loading/detail_loading.dart';
 import 'package:provider/provider.dart';
@@ -28,20 +29,21 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool isCheckFa = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     context.read<DetailProvider>().getDetail(widget.id);
+    checkFa();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   context.read<DetailProvider>().removeMovieDetail();
-  // }
+  Future<void> checkFa() async {
+    await context
+        .read<MyListProvider>()
+        .checkFavourite(context.read<SettingAppProvider>().uId, widget.id);
+  }
 
   @override
   void dispose() {
@@ -114,20 +116,30 @@ class _DetailPageState extends State<DetailPage>
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        String userId = "user_id";
+                                        String userId = context
+                                            .read<SettingAppProvider>()
+                                            .uId;
                                         int movieId = movieDetail.id;
-                                        String posterPath =
-                                            provider.movieDetail!.poster_path;
+                                        String backdropPath =
+                                            provider.movieDetail!.backdrop_path;
 
                                         Provider.of<MyListProvider>(context,
                                                 listen: false)
                                             .addToFavourites(
-                                                userId, movieId, posterPath);
+                                                userId, movieId, backdropPath);
                                       },
-                                      child: Image.asset(
-                                        'assets/images/detail/Bookmark.png',
-                                        width: 20.w,
-                                        height: 20.h,
+                                      child: Consumer<MyListProvider>(
+                                        builder: (_, provider, __) {
+                                          return Image.asset(
+                                            'assets/images/detail/Bookmark.png',
+                                            width: 20.w,
+                                            height: 20.h,
+                                            color: provider.checkListFa
+                                                    .contains(widget.id)
+                                                ? Colors.red
+                                                : Colors.white,
+                                          );
+                                        },
                                       ),
                                     ),
                                     20.horizontalSpace,

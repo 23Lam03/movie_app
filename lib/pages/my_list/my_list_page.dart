@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/provider/my_list_provider.dart';
+import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/widgets/empty_data.dart';
 import 'package:provider/provider.dart';
 
@@ -18,16 +19,13 @@ class _MyListPageState extends State<MyListPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      fetchFavorites(
-          "actual_authenticated_user_id"); // Replace with actual user ID
-    });
+    fetchFavorites();
   }
 
-  void fetchFavorites(String userId) async {
+  void fetchFavorites() async {
     setState(() => _isLoading = true);
     await Provider.of<MyListProvider>(context, listen: false)
-        .fetchFavoriteMovies(userId);
+        .fetchFavoriteMovies(context.read<SettingAppProvider>().uId);
     setState(() => _isLoading = false);
   }
 
@@ -58,8 +56,7 @@ class _MyListPageState extends State<MyListPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 16.w),
                       child: GestureDetector(
-                        onTap: () => fetchFavorites(
-                            "actual_authenticated_user_id"), // Refresh on tap
+                        onTap: fetchFavorites,
                         child: Image.asset(
                           'assets/images/login/Search.png',
                           width: 28.w,
@@ -90,21 +87,13 @@ class _MyListPageState extends State<MyListPage> {
                                   itemBuilder: (context, index) {
                                     final movie =
                                         provider.favoriteMovies[index];
-                                    return Card(
-                                      child: Column(
-                                        children: [
-                                          Image.network(
-                                            movie['posterPath'],
-                                            fit: BoxFit.cover,
-                                            width: double.infinity,
-                                            height: 150.h,
-                                          ),
-                                          SizedBox(height: 8.h),
-                                          Text(
-                                            'Movie ID: ${movie['idMovie']}',
-                                            style: TextStyle(fontSize: 14.sp),
-                                          ),
-                                        ],
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      child: Image.network(
+                                        'https://image.tmdb.org/t/p/w500${movie['backdrop_path']}',
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: 150.h,
                                       ),
                                     );
                                   },
