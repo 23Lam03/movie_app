@@ -8,7 +8,6 @@ class DetailProvider extends ChangeNotifier {
   bool isLoading = true;
 
   void removeMovieDetail() {
-    print(isLoading);
     isLoading = false;
   }
 

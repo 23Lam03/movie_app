@@ -73,13 +73,11 @@ class AuthProvider extends ChangeNotifier {
   void _handleAuthError(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':
-        print("No user found with this email.");
         break;
       case 'wrong-password':
         print("Incorrect password.");
         break;
       default:
-        print("Authentication error: ${e.message}");
     }
   }
 }
