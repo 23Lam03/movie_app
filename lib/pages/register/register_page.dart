@@ -20,6 +20,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  List<String> typeSex = ['Male', 'Female'];
 
   TextEditingController emailController =
       TextEditingController(text: 'demo@gmail.com');
@@ -27,9 +28,8 @@ class _RegistrationPageState extends State<RegisterPage> {
       TextEditingController(text: '123456');
   TextEditingController confirmPasswordController =
       TextEditingController(text: '123456');
-  TextEditingController nameController = TextEditingController(text: 'nbm');
-  TextEditingController userNameController =
-      TextEditingController(text: 'sdfsf');
+  TextEditingController nameController = TextEditingController(text: 'Lam');
+  TextEditingController userNameController = TextEditingController(text: 'Duc');
   TextEditingController phoneNumberController =
       TextEditingController(text: '2341241');
   String gender = '';
@@ -129,7 +129,7 @@ class _RegistrationPageState extends State<RegisterPage> {
                           color: const Color(0xff1F222A),
                         ),
                         child: DropdownButton<String>(
-                          value: gender,
+                          value: typeSex[0],
                           icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 24.sp,
                           underline: const SizedBox(),
@@ -143,7 +143,7 @@ class _RegistrationPageState extends State<RegisterPage> {
                               gender = newValue!;
                             });
                           },
-                          items: <String>['Male', 'Female']
+                          items: typeSex
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,

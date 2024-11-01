@@ -63,8 +63,6 @@ class SearchPage extends SearchDelegate {
                       foregroundImage: NetworkImage(
                         'https://image.tmdb.org/t/p/w500${search[index].backdrop_path}',
                       ),
-                      backgroundImage: const NetworkImage(
-                          'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg'),
                     ),
                     title: Text(search[index].name),
                   ),

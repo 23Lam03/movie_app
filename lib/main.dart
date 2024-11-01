@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_app/app/my_app.dart';
 import 'package:movie_app/firebase_options.dart';
 
@@ -35,10 +36,15 @@ void main(List<String> args) async {
   await handleInitMessage();
 
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  // khong xoay man hinh
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  /////////
   runApp(
     DevicePreview(
-      enabled: kReleaseMode,
+      enabled: !kReleaseMode,
       builder: (context) => const MyApp(), // Wrap your app
     ),
   );

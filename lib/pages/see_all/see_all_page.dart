@@ -90,6 +90,7 @@ class SeeAllPage extends StatelessWidget {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
+                                    color: Colors.white10,
                                     image: DecorationImage(
                                       image: NetworkImage(
                                         'https://image.tmdb.org/t/p/w500${data[index].poster_path}',
