@@ -16,6 +16,7 @@ import 'package:movie_app/widgets/button_main_custom.dart';
 import 'package:movie_app/widgets/loading/detail_loading.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DetailPage extends StatefulWidget {
@@ -143,10 +144,16 @@ class _DetailPageState extends State<DetailPage>
                                       ),
                                     ),
                                     20.horizontalSpace,
-                                    Image.asset(
-                                      'assets/images/detail/Send.png',
-                                      width: 20.w,
-                                      height: 20.h,
+                                    InkWell(
+                                      onTap: () {
+                                        Share.share(
+                                            'https://img.youtube.com/vi/0.jpg');
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/detail/Send.png',
+                                        width: 20.w,
+                                        height: 20.h,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -248,39 +255,6 @@ class _DetailPageState extends State<DetailPage>
                                       color: SettingApp.colorText),
                                 ),
                                 20.verticalSpace,
-
-                                // Row(
-                                //   children: movieDetail.production_companies
-                                //       .map((provider) => Row(
-                                //             children: [
-                                //               Image.network(
-                                //                 'https://image.tmdb.org/t/p/w500${provider.logo_path}',
-                                //                 width: 40.w,
-                                //                 height: 40.h,
-                                //                 fit: BoxFit.cover,
-                                //               ),
-                                //               12.horizontalSpace,
-                                //               Column(
-                                //                 crossAxisAlignment:
-                                //                     CrossAxisAlignment.start,
-                                //                 children: [
-                                //                   Text(
-                                //                     provider.name,
-                                //                     style: SettingApp.heding2
-                                //                         .copyWith(fontSize: 10),
-                                //                   ),
-                                //                   Text(
-                                //                     provider.origin_country,
-                                //                     style: SettingApp.heding4
-                                //                         .copyWith(fontSize: 10),
-                                //                   ),
-                                //                 ],
-                                //               ),
-                                //             ],
-                                //           ))
-                                //       .toList(),
-                                // ),
-                                // 28.verticalSpace,
                                 TabBar(
                                   physics: const NeverScrollableScrollPhysics(),
                                   controller: _tabController,

@@ -1,7 +1,5 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie_app/app/my_app.dart';
@@ -42,10 +40,15 @@ void main(List<String> args) async {
     DeviceOrientation.portraitDown,
   ]);
   /////////
+  // runApp(
+  //   DevicePreview(
+  //     enabled: !kReleaseMode,
+  //     builder: (context) => const MyApp(), // Wrap your app
+  //   ),
+  // );
+
+  //////////////////////////////////////////////////////////////////
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const MyApp(), // Wrap your app
-    ),
+    const MyApp(),
   );
 }

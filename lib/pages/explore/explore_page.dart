@@ -5,6 +5,7 @@ import 'package:movie_app/app/routers/router_name.dart';
 import 'package:movie_app/app/setting_app.dart';
 import 'package:movie_app/models/movie_genre.dart';
 import 'package:movie_app/models/movie_model.dart';
+import 'package:movie_app/pages/search/search_page.dart';
 import 'package:movie_app/provider/genre_provider.dart';
 import 'package:movie_app/provider/home_provider.dart';
 import 'package:movie_app/widgets/button_main_custom.dart';
@@ -48,23 +49,31 @@ class _ExplorePageState extends State<ExplorePage> {
                             borderRadius: BorderRadius.circular(12.r),
                             color: const Color(0xff1F222A),
                           ),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/login/Search.png',
-                                fit: BoxFit.cover,
-                                width: 15.w,
-                                height: 15.h,
-                              ),
-                              12.horizontalSpace,
-                              Text(
-                                'Search',
-                                style: SettingApp.heding4.copyWith(
-                                  fontSize: 14.sp,
-                                  color: const Color(0xff757575),
+                          child: InkWell(
+                            onTap: () async {
+                              await showSearch(
+                                context: context,
+                                delegate: SearchPage(),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  'assets/images/login/Search.png',
+                                  fit: BoxFit.cover,
+                                  width: 15.w,
+                                  height: 15.h,
                                 ),
-                              ),
-                            ],
+                                12.horizontalSpace,
+                                Text(
+                                  'Search',
+                                  style: SettingApp.heding4.copyWith(
+                                    fontSize: 14.sp,
+                                    color: const Color(0xff757575),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -100,11 +109,11 @@ class _ExplorePageState extends State<ExplorePage> {
                                       ),
                                     ),
                                     16.verticalSpace,
-                                    _category('Categories'),
-                                    _category('Regions'),
+                                    // _category('Categories'),
+                                    // _category('Regions'),
                                     _category('Genre'),
-                                    _category('Time/Periods'),
-                                    _category('Sort'),
+                                    // _category('Time/Periods'),
+                                    // _category('Sort'),
                                     48.verticalSpace,
                                     Row(
                                       children: [
@@ -121,7 +130,61 @@ class _ExplorePageState extends State<ExplorePage> {
                                         12.horizontalSpace,
                                         Expanded(
                                           child: ButtonMainCustom(
-                                            onTap: () {},
+                                            onTap: () {
+                                              showMaterialModalBottomSheet(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                builder: (context) => Align(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 35.h,
+                                                            horizontal: 24.w),
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                          0xff35383F),
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                40.r),
+                                                        topRight:
+                                                            Radius.circular(
+                                                                40.r),
+                                                      ),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Center(
+                                                          child: Text(
+                                                            'Under development.....',
+                                                            style: SettingApp
+                                                                .heding2
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        20.sp),
+                                                          ),
+                                                        ),
+                                                        24.verticalSpace,
+                                                        Center(
+                                                          child: Image.asset(
+                                                              'assets/images/my_list/myList.png'),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                             title: 'Apply',
                                           ),
                                         ),

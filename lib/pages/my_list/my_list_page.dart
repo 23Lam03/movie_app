@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/app/setting_app.dart';
+import 'package:movie_app/pages/search/search_page.dart';
 import 'package:movie_app/provider/my_list_provider.dart';
 import 'package:movie_app/provider/setting_app_provider.dart';
 import 'package:movie_app/widgets/empty_data.dart';
@@ -57,10 +58,18 @@ class _MyListPageState extends State<MyListPage> {
                       padding: EdgeInsets.only(left: 16.w),
                       child: GestureDetector(
                         onTap: fetchFavorites,
-                        child: Image.asset(
-                          'assets/images/login/Search.png',
-                          width: 28.w,
-                          height: 28.h,
+                        child: InkWell(
+                          onTap: () async {
+                            await showSearch(
+                              context: context,
+                              delegate: SearchPage(),
+                            );
+                          },
+                          child: Image.asset(
+                            'assets/images/login/Search.png',
+                            width: 28.w,
+                            height: 28.h,
+                          ),
                         ),
                       ),
                     ),
