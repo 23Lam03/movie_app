@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,6 +7,8 @@ import 'package:movie_app/app/helper/share_pre.dart';
 
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // Email/Password login
@@ -41,6 +44,14 @@ class AuthProvider extends ChangeNotifier {
 
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
+      await firestore.collection('users').doc(userCredential.user!.uid).set({
+        'email': userCredential.user!.email,
+        'name': userCredential.user!.displayName,
+        'userName': userCredential.user!.displayName,
+        'phoneNumber': '',
+        'image': userCredential.user!.photoURL,
+        'createdAt': Timestamp.now(),
+      });
       return await _handleAuthSuccess(userCredential);
     } on FirebaseAuthException catch (e) {
       _handleAuthError(e);

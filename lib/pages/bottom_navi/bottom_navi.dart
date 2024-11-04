@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/app/const/accout.dart';
+import 'package:movie_app/app/helper/share_pre.dart';
 import 'package:movie_app/pages/download/download_page.dart';
 import 'package:movie_app/pages/explore/explore_page.dart';
 import 'package:movie_app/pages/home/home_page.dart';
@@ -38,6 +40,7 @@ class _BottomNaviState extends State<BottomNavi> {
   @override
   void initState() {
     // TODO: implement initState
+    //
     super.initState();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -58,6 +61,15 @@ class _BottomNaviState extends State<BottomNavi> {
         );
       }).catchError((error) => print("Failed to add user: $error"));
     });
+    updateUser();
+  }
+
+  void updateUser() async {
+    String uID = await SharePre.getString(Accout.keyUserId);
+
+    if (uID != '') {
+      context.read<SettingAppProvider>().updateUid(uID);
+    }
   }
 
   @override
