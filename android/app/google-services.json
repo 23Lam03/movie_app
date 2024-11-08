@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:831793052695:android:ece91b6a21806f14cc3052",
+        "mobilesdk_app_id": "1:831793052695:android:0fb313d45eb928b1cc3052",
         "android_client_info": {
-          "package_name": "com.example.movie_app"
+          "package_name": "com.henzoLDL.TrailerMovie"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "831793052695-o25m421ki3c91iqsabvkvr9jb626t0pi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.henzoLDL.TrailerMovie",
+            "certificate_hash": "1e6fe55bcf0fdaa1997068a2c27c7467b7c70582"
+          }
+        },
+        {
+          "client_id": "831793052695-jlr6dm9l4ag6etmasgunlbnc8ttd8uvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBwnyqqcVjnwcIPiHiOu7RsNLRzxYSVeDY"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831793052695-jlr6dm9l4ag6etmasgunlbnc8ttd8uvt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "831793052695-us8cg740gqihheaarpahimmjedakhou2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.movieApp"
+              }
+            }
+          ]
         }
       }
     }

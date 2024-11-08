@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBwnyqqcVjnwcIPiHiOu7RsNLRzxYSVeDY',
-    appId: '1:831793052695:android:ece91b6a21806f14cc3052',
+    appId: '1:831793052695:android:0fb313d45eb928b1cc3052',
     messagingSenderId: '831793052695',
     projectId: 'movieapp-f7586',
     storageBucket: 'movieapp-f7586.appspot.com',
@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '831793052695',
     projectId: 'movieapp-f7586',
     storageBucket: 'movieapp-f7586.appspot.com',
+    androidClientId: '831793052695-c2927tqmjtph40reh7172f33tc4gfs0r.apps.googleusercontent.com',
+    iosClientId: '831793052695-us8cg740gqihheaarpahimmjedakhou2.apps.googleusercontent.com',
     iosBundleId: 'com.example.movieApp',
   );
 
@@ -72,6 +74,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '831793052695',
     projectId: 'movieapp-f7586',
     storageBucket: 'movieapp-f7586.appspot.com',
+    androidClientId: '831793052695-c2927tqmjtph40reh7172f33tc4gfs0r.apps.googleusercontent.com',
+    iosClientId: '831793052695-us8cg740gqihheaarpahimmjedakhou2.apps.googleusercontent.com',
     iosBundleId: 'com.example.movieApp',
   );
 
